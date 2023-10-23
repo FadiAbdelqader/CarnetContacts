@@ -54,6 +54,21 @@ public class ContactRepository implements IContact {
 
         return success;
     }
+
+    @Override
+    public void deleteContact(long idContact) {
+
+    }
+
+    @Override
+    public Contact getContact(long idContact) {
+        return null;
+    }
+
+    @Override
+    public void modifyContact(long idContact, String fname, String lname, String email) {
+
+    }
 }
 
 
