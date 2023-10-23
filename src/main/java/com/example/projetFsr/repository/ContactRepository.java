@@ -1,7 +1,7 @@
 package com.example.projetFsr.repository;
 
 import com.example.projetFsr.configuration.JpaUtil;
-import com.example.projetFsr.model.Adress;
+import com.example.projetFsr.model.Address;
 import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
 import com.example.projetFsr.model.PhoneNumber;
@@ -32,7 +32,7 @@ public class ContactRepository implements IContact {
             cgs.add(cg2);
             contact.setCg(cgs);
             cg1.setContact(contacts);
-            Adress ad = new Adress("Avenue de la Republique", "Nanterre", "92000", "France");
+            Address ad = new Address("Avenue de la Republique", "Nanterre", "92000", "France");
             PhoneNumber ph_home = new PhoneNumber("home", "0123456789");
             ph_home.setContact(contact);
             PhoneNumber ph_port = new PhoneNumber("portable", "0612345678");

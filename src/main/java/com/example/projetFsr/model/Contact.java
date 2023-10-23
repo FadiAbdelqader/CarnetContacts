@@ -18,7 +18,7 @@ public class Contact {
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="idAdresse")
-    Adress address=null;
+    Address address=null;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="contact")
     Set<PhoneNumber> phones =new HashSet<PhoneNumber>();
@@ -79,12 +79,12 @@ public class Contact {
     }
 
 
-    public Adress getAdress() {
+    public Address getAdress() {
         return address;
     }
 
 
-    public void setAdress(Adress adresse) {
+    public void setAdress(Address adresse) {
         this.address = adresse;
     }
 

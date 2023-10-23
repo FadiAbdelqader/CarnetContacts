@@ -17,7 +17,7 @@ public class JpaUtil {
      */
     public static EntityManagerFactory getEmf() {
         if(emf == null){
-            emf = Persistence.createEntityManagerFactory("projetJPA");
+            emf = Persistence.createEntityManagerFactory("projetFsr");
         }
         return emf;
     }
