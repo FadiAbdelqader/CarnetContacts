@@ -18,14 +18,14 @@ public class Contact {
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="idAdresse")
-    Adresse address=null;
+    Adress address=null;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="contact")
     Set<PhoneNumber> phones =new HashSet<PhoneNumber>();
 
     @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(name="CTC_GRP", joinColumns=@JoinColumn(name="CTC_ID"), inverseJoinColumns=@JoinColumn(name="GRP_ID"))
-    private Set<ContactGroupe> cg=new HashSet<>();
+    private Set<ContactGroup> cg=new HashSet<>();
 
     public Contact(){
     }
@@ -79,12 +79,12 @@ public class Contact {
     }
 
 
-    public Adresse getAdress() {
+    public Adress getAdress() {
         return address;
     }
 
 
-    public void setAdress(Adresse adresse) {
+    public void setAdress(Adress adresse) {
         this.address = adresse;
     }
 
@@ -99,12 +99,12 @@ public class Contact {
     }
 
 
-    public Set<ContactGroupe> getCg() {
+    public Set<ContactGroup> getCg() {
         return cg;
     }
 
 
-    public void setCg(Set<ContactGroupe> cg) {
+    public void setCg(Set<ContactGroup> cg) {
         this.cg = cg;
     }
 }

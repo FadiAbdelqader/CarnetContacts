@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="contactGroups")
-public class ContactGroupe {
+public class ContactGroup {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long idContact;
     private String groupeName;
@@ -14,11 +14,11 @@ public class ContactGroupe {
     @ManyToMany(mappedBy="cg")
     private Set <Contact> contacts=new HashSet<Contact>();
 
-    public ContactGroupe() {
+    public ContactGroup() {
 
     }
 
-    public ContactGroupe(String groupeName) {
+    public ContactGroup(String groupeName) {
         this.groupeName = groupeName;
     }
 
