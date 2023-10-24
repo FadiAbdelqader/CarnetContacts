@@ -1,9 +1,10 @@
 package com.example.projetFsr.model;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Component
 @Entity
 @Table(name="contactGroups")
 public class ContactGroup {
