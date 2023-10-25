@@ -39,7 +39,7 @@ public class ContactGroupRepository implements IContactGroup{
     }
 
     @Override
-    public boolean deleteGroup(long idGroup) {
+    public boolean deleteGroupById(long idGroup) {
         boolean success = false;
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
@@ -52,6 +52,28 @@ public class ContactGroupRepository implements IContactGroup{
                 success = true;
             } else {
                 System.out.println("Aucun groupe avec l'ID " + idGroup + " n'a été trouvé.");
+            }
+            em.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return success;
+    }
+
+    @Override
+    public boolean deleteGroupByName(String groupName) {
+        boolean success = false;
+        try {
+            EntityManager em = JpaUtil.getEmf().createEntityManager();
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
+            ContactGroup contactGroup = getGroupByGroupeName(groupName);
+            if (contactGroup != null) {
+                em.remove(contactGroup); // Suppression de l'entité
+                tx.commit();
+                success = true;
+            } else {
+                System.out.println("Le groupe " + groupName + " n'a pas été trouvé.");
             }
             em.close();
         } catch (Exception e) {

@@ -9,7 +9,10 @@ public interface IContactGroup {
 
     public boolean createGroup(String groupName);
 
-    boolean deleteGroup(long idGroup);
+    boolean deleteGroupById(long idGroup);
+
+    boolean deleteGroupByName(String groupName);
+
 
     ContactGroup getGroupById(long idGroup);
 

@@ -18,7 +18,7 @@ public class ServiceGroupeContact {
     }
 
     public void deleteGroup(long idGroup){
-        cgr.deleteGroup(idGroup);
+        cgr.deleteGroupById(idGroup);
     }
 
     public ContactGroup getGroupByName(String groupeName){
@@ -27,6 +27,10 @@ public class ServiceGroupeContact {
 
     public ContactGroup getGroupById(long idGroup){
         return cgr.getGroupById(idGroup);
+    }
+
+    public boolean deleteGroupByName(String groupName){
+        return cgr.deleteGroupByName(groupName);
     }
 
     public void modifyGroup(String oldName, String newName){
