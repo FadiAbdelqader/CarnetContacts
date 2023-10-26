@@ -8,11 +8,11 @@ import java.util.Set;
 @Entity
 @Table(name="contactGroups")
 public class ContactGroup {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long idContact;
-    private String groupeName;
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private long idGroup;
+    private String groupName;
 
-    @ManyToMany(mappedBy="cg")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy="cg")
     private Set <Contact> contacts=new HashSet<Contact>();
 
     public ContactGroup() {
@@ -20,20 +20,20 @@ public class ContactGroup {
     }
 
     public ContactGroup(String groupeName) {
-        this.groupeName = groupeName;
+        this.groupName = groupeName;
     }
 
-    public long getIdContact() {
-        return idContact;
+    public long getIdGroup() {
+        return idGroup;
     }
-    public void setIdContact(long idContact) {
-        this.idContact = idContact;
+    public void setIdGroup(long idGroup) {
+        this.idGroup = idGroup;
     }
-    public String getGroupeName() {
-        return groupeName;
+    public String getGroupName() {
+        return groupName;
     }
-    public void setGroupeName(String groupeName) {
-        this.groupeName = groupeName;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public Set<Contact> getContact() {

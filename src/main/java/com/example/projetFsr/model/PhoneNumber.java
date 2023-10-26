@@ -11,8 +11,7 @@ public class PhoneNumber {
     private String phoneKind;
     private String phoneNumber;
 
-    @ManyToOne
-    @JoinColumn(name="id_contact")
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private Contact contact;
 
     public PhoneNumber() {

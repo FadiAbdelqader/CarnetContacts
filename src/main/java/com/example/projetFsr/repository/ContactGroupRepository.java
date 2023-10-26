@@ -20,14 +20,14 @@ public class ContactGroupRepository implements IContactGroup{
     ContactGroup contactGroup;
 
     @Override
-    public boolean createGroup(String groupName) {
+    public boolean createGroup(ContactGroup cg) {
         boolean success = false;
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            contactGroup.setGroupeName(groupName);
-            em.persist(contactGroup);
+            //contactGroup.setGroupeName(groupName);
+            em.persist(cg);
             tx.commit();
             em.close();
             success = true;
@@ -39,19 +39,19 @@ public class ContactGroupRepository implements IContactGroup{
     }
 
     @Override
-    public boolean deleteGroupById(long idGroup) {
+    public boolean deleteGroupById(ContactGroup cg) {
         boolean success = false;
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            ContactGroup contactGroup = em.find(ContactGroup.class, idGroup);
+            ContactGroup contactGroup = em.find(ContactGroup.class, cg.getIdGroup());
             if (contactGroup != null) {
                 em.remove(contactGroup); // Suppression de l'entité
                 tx.commit();
                 success = true;
             } else {
-                System.out.println("Aucun groupe avec l'ID " + idGroup + " n'a été trouvé.");
+                System.out.println("Aucun groupe avec l'ID " + cg.getIdGroup() + " n'a été trouvé.");
             }
             em.close();
         } catch (Exception e) {
@@ -61,19 +61,19 @@ public class ContactGroupRepository implements IContactGroup{
     }
 
     @Override
-    public boolean deleteGroupByName(String groupName) {
+    public boolean deleteGroupByName(ContactGroup cg) {
         boolean success = false;
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            ContactGroup contactGroup = getGroupByGroupeName(groupName);
+            ContactGroup contactGroup = getGroupByGroupName(cg);
             if (contactGroup != null) {
                 em.remove(contactGroup); // Suppression de l'entité
                 tx.commit();
                 success = true;
             } else {
-                System.out.println("Le groupe " + groupName + " n'a pas été trouvé.");
+                System.out.println("Le groupe " + cg.getGroupName() + " n'a pas été trouvé.");
             }
             em.close();
         } catch (Exception e) {
@@ -98,22 +98,23 @@ public class ContactGroupRepository implements IContactGroup{
     }
 
     @Override
-    public ContactGroup getGroupByGroupeName(String groupNameToFind) {
+    public ContactGroup getGroupByGroupName(ContactGroup cg) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         ContactGroup contactGroup = null;
         try {
             tx.begin();
-            TypedQuery<ContactGroup> query = em.createQuery("SELECT cg FROM ContactGroup cg WHERE cg.groupeName = :groupName", ContactGroup.class);
-            query.setParameter("groupName", groupNameToFind);
-
+            //TypedQuery<ContactGroup> query = em.createQuery("SELECT cg FROM ContactGroup cg WHERE cg.groupName = :groupName", ContactGroup.class);
+            //query.setParameter("groupName", groupNameToFind);
+            TypedQuery<ContactGroup> query = em.createQuery("SELECT cg FROM ContactGroup cg", ContactGroup.class);
             List<ContactGroup> groups = query.getResultList();
-
+            //List<ContactGroup> groups = query.getResultList();
+            System.out.println("groups : "+ groups);
             for (ContactGroup group : groups) {
-                if(group.getGroupeName().equals(groupNameToFind)) {
+                if(group.getGroupName().equals(cg.getGroupName())) {
                     contactGroup = group;
                 } else {
-                    System.out.println("No ContactGroup found with the name: " + groupNameToFind);
+                    System.out.println("No ContactGroup found with the name: " + contactGroup.getGroupName());
                 }
             }
         } catch (Exception e) {
@@ -147,15 +148,15 @@ public class ContactGroupRepository implements IContactGroup{
     }
 
     @Override
-    public void modifyGroup(String oldName, String groupName) {
-        ContactGroup contactGroup = getGroupByGroupeName(oldName);
+    public void modifyGroup(ContactGroup cg, String groupName) {
+        ContactGroup contactGroup = getGroupByGroupName(cg);
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            Query updateQuery = em.createQuery("UPDATE ContactGroup cg SET cg.groupeName = :newGroupName WHERE cg.groupeName = :oldGroupName");
+            Query updateQuery = em.createQuery("UPDATE ContactGroup cg SET cg.groupName = :newGroupName WHERE cg.groupName = :oldGroupName");
             updateQuery.setParameter("newGroupName", groupName);
-            updateQuery.setParameter("oldGroupName", oldName);
+            updateQuery.setParameter("oldGroupName", cg.getGroupName());
             int rowsUpdated = updateQuery.executeUpdate();
             tx.commit();
             System.out.println(rowsUpdated + " rows updated.");

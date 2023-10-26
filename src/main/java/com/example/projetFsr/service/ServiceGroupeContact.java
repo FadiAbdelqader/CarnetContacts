@@ -9,32 +9,33 @@ import java.util.Set;
 @Service("groupeContact")
 public class ServiceGroupeContact {
     @Autowired
-    ContactGroupRepository cgr;
-    public void createGroupeContact(String name) {
-        cgr.createGroup(name);
+    ContactGroupRepository contactGroupRepository;
+    public boolean createGroupeContact(ContactGroup cg) {
+        return contactGroupRepository.createGroup(cg);
     }
     public Set<ContactGroup> getGroups() {
-        return cgr.getAllGroups();
+        return contactGroupRepository.getAllGroups();
     }
 
-    public void deleteGroup(long idGroup){
-        cgr.deleteGroupById(idGroup);
+    public void deleteGroupById(ContactGroup cg){
+        contactGroupRepository.deleteGroupById(cg);
     }
 
-    public ContactGroup getGroupByName(String groupeName){
-        return cgr.getGroupByGroupeName(groupeName);
+
+    public ContactGroup getGroupByName(ContactGroup contactGroup){
+        return contactGroupRepository.getGroupByGroupName(contactGroup);
     }
 
     public ContactGroup getGroupById(long idGroup){
-        return cgr.getGroupById(idGroup);
+        return contactGroupRepository.getGroupById(idGroup);
     }
 
-    public boolean deleteGroupByName(String groupName){
-        return cgr.deleteGroupByName(groupName);
+    public boolean deleteGroupByName(ContactGroup cg){
+        return contactGroupRepository.deleteGroupByName(cg);
     }
 
-    public void modifyGroup(String oldName, String newName){
-        cgr.modifyGroup(oldName, newName);
+    public void modifyGroup(ContactGroup cg, String newName){
+        contactGroupRepository.modifyGroup(cg, newName);
     }
 
 }

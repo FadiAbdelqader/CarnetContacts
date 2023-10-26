@@ -1,24 +1,23 @@
 package com.example.projetFsr.repository;
 
-import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
 
 import java.util.Set;
 
 public interface IContactGroup {
 
-    public boolean createGroup(String groupName);
+    public boolean createGroup(ContactGroup cg);
 
-    boolean deleteGroupById(long idGroup);
+    boolean deleteGroupById(ContactGroup contactGroup);
 
-    boolean deleteGroupByName(String groupName);
+    boolean deleteGroupByName(ContactGroup contactGroup);
 
 
     ContactGroup getGroupById(long idGroup);
 
-    ContactGroup getGroupByGroupeName(String groupName);
+    ContactGroup getGroupByGroupName(ContactGroup contactGroup);
 
     Set<ContactGroup> getAllGroups();
 
-    void modifyGroup(String groupName, String oldName);
+    void modifyGroup(ContactGroup contactGroup, String oldName);
 }

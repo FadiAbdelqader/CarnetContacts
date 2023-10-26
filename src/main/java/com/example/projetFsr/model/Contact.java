@@ -20,7 +20,8 @@ public class Contact {
     @JoinColumn(name="idAdresse")
     Address address=null;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="contact")
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="idPhoneNumber")
     Set<PhoneNumber> phones =new HashSet<PhoneNumber>();
 
     @ManyToMany(cascade=CascadeType.PERSIST)
