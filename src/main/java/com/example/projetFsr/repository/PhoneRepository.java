@@ -1,7 +1,6 @@
 package com.example.projetFsr.repository;
 
 import com.example.projetFsr.configuration.JpaUtil;
-import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.PhoneNumber;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -10,25 +9,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ContactRepository {
-
+public class PhoneRepository {
     @Autowired
-    Contact contact;
-    public boolean addContact(Contact contact) {
+    PhoneNumber phoneNumber;
 
+    public Boolean createNumberPhone(PhoneNumber phone) {
         boolean success = false;
         try {
-            contact.setFirstName(contact.getFirstName());
-            contact.setLastName(contact.getLastName());
-            contact.setEmail(contact.getEmail());
-            contact.setAddress(contact.getAddress());
-            contact.setPhones(contact.getPhones());
-
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
 
-            em.persist(contact);
+            em.persist(phone);
 
             tx.commit();
             em.close();
@@ -39,28 +31,4 @@ public class ContactRepository {
 
         return success;
     }
-
-    public void deleteContact(long idContact) {
-
-    }
-
-    public Contact getContact(long idContact) {
-        return null;
-    }
-
-    public void modifyContact(long idContact, String fname, String lname, String email) {
-
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

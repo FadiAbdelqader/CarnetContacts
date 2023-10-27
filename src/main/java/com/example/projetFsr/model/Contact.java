@@ -1,10 +1,12 @@
 package com.example.projetFsr.model;
 
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 @Entity
 @Table(name="contacts")
 public class Contact {
@@ -12,15 +14,18 @@ public class Contact {
     private String firstName;
     private String lastName;
     private String email;
+
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long idContact;
 
     @OneToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name="idAdresse")
-    Adress address=null;
+    @JoinColumn(name="idAddresse")
+    Address address=null;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="contact")
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="idPhoneNumber")
     Set<PhoneNumber> phones =new HashSet<PhoneNumber>();
 
     @ManyToMany(cascade=CascadeType.PERSIST)
@@ -79,15 +84,14 @@ public class Contact {
     }
 
 
-    public Adress getAdress() {
+    public Address getAddress() {
         return address;
     }
 
 
-    public void setAdress(Adress adresse) {
-        this.address = adresse;
+    public void setAddress(Address address) {
+        this.address = address;
     }
-
 
     public Set<PhoneNumber> getPhones() {
         return phones;

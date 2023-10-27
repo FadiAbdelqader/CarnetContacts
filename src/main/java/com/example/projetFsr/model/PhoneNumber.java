@@ -1,6 +1,8 @@
 package com.example.projetFsr.model;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
+@Component
 @Entity
 @Table(name="phoneNumbers")
 public class PhoneNumber {
@@ -11,9 +13,9 @@ public class PhoneNumber {
     private String phoneKind;
     private String phoneNumber;
 
-    @ManyToOne
-    @JoinColumn(name="id_contact")
-    private Contact contact;
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "idContact")
+    private Contact idContact;
 
     public PhoneNumber() {
         super();
@@ -48,11 +50,20 @@ public class PhoneNumber {
         this.phoneNumber = phoneNumber;
     }
 
-    public Contact getContact() {
-        return contact;
+    public Contact getIdContact() {
+        return idContact;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setIdContact(Contact idcontact) {
+        this.idContact = idcontact;
+    }
+
+    @Override
+    public String toString() {
+        return "PhoneNumber{" +
+                "idPhoneNumber=" + idPhoneNumber +
+                ", phoneKind='" + phoneKind + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

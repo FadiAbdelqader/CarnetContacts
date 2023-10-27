@@ -1,13 +1,24 @@
 package com.example.projetFsr.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.projetFsr.model.Contact;
+import com.example.projetFsr.model.PhoneNumber;
+import com.example.projetFsr.service.ServiceContact;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@CrossOrigin("*")
+@RequestMapping("/")
 public class ContactController {
 
-    @GetMapping("/welcome")
-    public String welcome(){
-        return "welcome";
+    @Autowired
+    ServiceContact serviceContact;
+    @PostMapping("/createcontact")
+    public Boolean createContact(@RequestBody Contact contact){
+        return serviceContact.createContact(contact);
     }
+
+
 }
