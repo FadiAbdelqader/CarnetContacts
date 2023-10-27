@@ -26,8 +26,8 @@ public class ServiceGroupeContact {
         return contactGroupRepository.getGroupByGroupName(contactGroup);
     }
 
-    public ContactGroup getGroupById(long idGroup){
-        return contactGroupRepository.getGroupById(idGroup);
+    public ContactGroup getGroupById(ContactGroup cg){
+        return contactGroupRepository.getGroupById(cg);
     }
 
     public boolean deleteGroupByName(ContactGroup cg){

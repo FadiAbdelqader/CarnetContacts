@@ -12,8 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ContactRepository implements IContact {
-    @Override
+public class ContactRepository {
     public boolean addContact(String lastname, String firstname, String email) {
 
         boolean success = false;
@@ -56,17 +55,14 @@ public class ContactRepository implements IContact {
         return success;
     }
 
-    @Override
     public void deleteContact(long idContact) {
 
     }
 
-    @Override
     public Contact getContact(long idContact) {
         return null;
     }
 
-    @Override
     public void modifyContact(long idContact, String fname, String lname, String email) {
 
     }

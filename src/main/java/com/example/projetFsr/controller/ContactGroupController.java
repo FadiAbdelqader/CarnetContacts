@@ -1,5 +1,6 @@
 package com.example.projetFsr.controller;
 
+import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
 import com.example.projetFsr.repository.GroupModificationDTO;
 import com.example.projetFsr.service.ServiceGroupeContact;
@@ -29,16 +30,16 @@ public class ContactGroupController {
 
     @PostMapping("/createGroup")
     public boolean createGroup(@RequestBody ContactGroup contactGroup){
+        System.out.println("***contacts***" + contactGroup.getContact());
         return serviceGroupeContact.createGroupeContact(contactGroup);
     }
 
     @GetMapping("/getgroupbyid")
     public ContactGroup getGroupeById(@RequestBody ContactGroup contactGroup){
-        return serviceGroupeContact.getGroupById(contactGroup.getIdGroup());
+        return serviceGroupeContact.getGroupById(contactGroup);
     }
     @GetMapping("/getgroupbyname")
     public ContactGroup getGroupeByName(@RequestBody ContactGroup contactGroup){
-        System.out.println("groupname : " + contactGroup.getGroupName());
         return serviceGroupeContact.getGroupByName(contactGroup);
     }
 
@@ -54,6 +55,16 @@ public class ContactGroupController {
         String newName = groupModificationDTO.getNewName();
         serviceGroupeContact.modifyGroup(cg, newName);
         return "Groupe " + cg.getGroupName() + " has been renamed : " + newName;
+
+        /*
+                {
+            "cg": {
+                "idGroup": 2,
+                "groupName": "MIAGE"
+            },
+            "newName": "MIAGENEW"
+        }
+         */
     }
 
 }

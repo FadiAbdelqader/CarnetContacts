@@ -14,6 +14,7 @@ public class Contact {
     private String email;
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JoinColumn(name="idContact")
     private long idContact;
 
     @OneToOne(cascade=CascadeType.PERSIST)
