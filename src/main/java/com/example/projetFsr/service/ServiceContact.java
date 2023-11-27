@@ -18,17 +18,17 @@ public class ServiceContact {
 		return contactRepository.addContact(contact);
 	}
 
-	public void deleteContact(long idContact) {
+	public void deleteContact(Integer idContact) {
 		ContactRepository daoc=new ContactRepository();
 		daoc.deleteContact(idContact);
 	}
 	
-	public Contact getContactById(long idContact) {
+	public Contact getContactById(Integer idContact) {
 		ContactRepository daoc=new ContactRepository();
 		return daoc.getContact(idContact);
 	}
 	
-	public void updateContact(long idContact, String fname, String lname, String email) {
+	public void updateContact(Integer idContact, String fname, String lname, String email) {
 		ContactRepository daoc=new ContactRepository();
 		daoc.modifyContact(idContact, fname, lname, email);
 	}

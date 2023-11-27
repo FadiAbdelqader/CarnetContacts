@@ -5,9 +5,9 @@ import com.example.projetFsr.model.Contact;
 public interface IContact {
     public boolean addContact(String lastname, String firstname, String email);
 
-    void deleteContact(long idContact);
+    void deleteContact(Integer idContact);
 
-    Contact getContact(long idContact);
+    Contact getContact(Integer idContact);
 
-    void modifyContact(long idContact, String fname, String lname, String email);
+    void modifyContact(Integer idContact, String fname, String lname, String email);
 }

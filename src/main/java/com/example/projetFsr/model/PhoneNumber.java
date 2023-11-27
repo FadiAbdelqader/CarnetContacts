@@ -6,19 +6,20 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name="phoneNumbers")
 public class PhoneNumber {
-
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long idPhoneNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPhoneNumber;
 
     private String phoneKind;
     private String phoneNumber;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "idContact")
-    private Contact idContact;
+    // Relation ManyToOne avec Contact
+    @ManyToOne
+    @JoinColumn(name = "contact_id") // Assurez-vous que le nom de la colonne correspond à votre schéma de base de données
+    private Contact contact;
 
     public PhoneNumber() {
-        super();
+        // Constructeur par défaut
     }
 
     public PhoneNumber(String phoneKind, String phoneNumber) {
@@ -26,12 +27,14 @@ public class PhoneNumber {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getIdPhoneNumber() {
+    // Getters et Setters
+
+    public Long getIdPhoneNumber() {
         return idPhoneNumber;
     }
 
-    public void setIdPhoneNumber(long idPhoneNumber) {
-        this.idPhoneNumber = idPhoneNumber;
+    public void setIdPhoneNumber(Long id) {
+        this.idPhoneNumber = id;
     }
 
     public String getPhoneKind() {
@@ -50,20 +53,11 @@ public class PhoneNumber {
         this.phoneNumber = phoneNumber;
     }
 
-    public Contact getIdContact() {
-        return idContact;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setIdContact(Contact idcontact) {
-        this.idContact = idcontact;
-    }
-
-    @Override
-    public String toString() {
-        return "PhoneNumber{" +
-                "idPhoneNumber=" + idPhoneNumber +
-                ", phoneKind='" + phoneKind + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }

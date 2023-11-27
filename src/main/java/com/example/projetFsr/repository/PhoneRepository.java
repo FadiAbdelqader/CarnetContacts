@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PhoneRepository {
-    @Autowired
-    PhoneNumber phoneNumber;
 
     public Boolean createNumberPhone(PhoneNumber phone) {
         boolean success = false;

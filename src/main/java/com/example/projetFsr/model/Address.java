@@ -1,6 +1,7 @@
 package com.example.projetFsr.model;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,13 +11,18 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAddresse;
+    private Integer idAddresse;
 
+    @NotNull
     private Integer number;
 
+    @NotNull
     private String street;
+    @NotNull
     private String city;
+    @NotNull
     private String zip;
+    @NotNull
     private String country;
 
     @OneToOne(mappedBy = "address")
@@ -33,11 +39,11 @@ public class Address {
         this.number = number;
     }
 
-    public long getIdAddresse() {
+    public Integer getIdAddresse() {
         return idAddresse;
     }
 
-    public void setIdAdresse(long idAdresse) {
+    public void setIdAdresse(Integer idAdresse) {
         this.idAddresse = idAdresse;
     }
 

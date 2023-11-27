@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name="contactGroups")
 public class ContactGroup {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long idContact;
+    private Integer idContact;
     private String groupeName;
 
     @ManyToMany(mappedBy="cg")
@@ -22,10 +22,10 @@ public class ContactGroup {
         this.groupeName = groupeName;
     }
 
-    public long getIdContact() {
+    public Integer getIdContact() {
         return idContact;
     }
-    public void setIdContact(long idContact) {
+    public void setIdContact(Integer idContact) {
         this.idContact = idContact;
     }
     public String getGroupeName() {

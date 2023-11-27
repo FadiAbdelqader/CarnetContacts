@@ -40,15 +40,15 @@ public class ContactRepository {
         return success;
     }
 
-    public void deleteContact(long idContact) {
+    public void deleteContact(Integer idContact) {
 
     }
 
-    public Contact getContact(long idContact) {
+    public Contact getContact(Integer idContact) {
         return null;
     }
 
-    public void modifyContact(long idContact, String fname, String lname, String email) {
+    public void modifyContact(Integer idContact, String fname, String lname, String email) {
 
     }
 }
