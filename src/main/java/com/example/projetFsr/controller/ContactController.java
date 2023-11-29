@@ -17,6 +17,8 @@ public class ContactController {
     ServiceContact serviceContact;
     @PostMapping("/createcontact")
     public Boolean createContact(@RequestBody Contact contact){
+        Integer idContact = contact.getIdContact();
+        contact.setIdContact(idContact);
         return serviceContact.createContact(contact);
     }
 

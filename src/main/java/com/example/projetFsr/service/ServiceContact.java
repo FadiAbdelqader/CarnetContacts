@@ -14,7 +14,6 @@ public class ServiceContact {
 	@Autowired
 	ContactRepository contactRepository;
 	public Boolean createContact(Contact contact) {
-
 		return contactRepository.addContact(contact);
 	}
 

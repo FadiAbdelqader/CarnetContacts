@@ -16,23 +16,8 @@ public class AddressController {
     ServiceAddress serviceAddress;
 
     @PostMapping("/createaddress")
-    public Boolean createAddress( @RequestBody Address address) {
-        if (validateAddress(address)) {
-            return serviceAddress.createAddress(address);
-        }
-        return false;
+    public Boolean createAddress(@RequestBody Address address) {
+        return serviceAddress.createAddress(address);
     }
 
-    private boolean validateAddress(Address address) {
-        if (address != null) {
-            if (address.getStreet() != null && !address.getStreet().isEmpty() &&
-                    address.getCity() != null && !address.getCity().isEmpty() &&
-                    address.getZip() != null && !address.getZip().isEmpty() &&
-                    address.getCountry() != null && !address.getCountry().isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
-

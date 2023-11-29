@@ -20,7 +20,7 @@ public class Contact {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idContact;
 
-    @OneToOne(cascade=CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name="idAddresse")
     Address address=null;
 

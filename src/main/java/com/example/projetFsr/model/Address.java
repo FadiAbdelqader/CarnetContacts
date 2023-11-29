@@ -31,12 +31,14 @@ public class Address {
     public Address() {
     }
 
-    public Address(String street, String city, String zip, String country, Integer number) {
+    public Address(Integer idAddresse, Integer number, String street, String city, String zip, String country, Contact contact) {
+        this.idAddresse = idAddresse;
+        this.number = number;
         this.street = street;
         this.city = city;
         this.zip = zip;
         this.country = country;
-        this.number = number;
+        this.contact = contact;
     }
 
     public Integer getIdAddresse() {
@@ -93,6 +95,10 @@ public class Address {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public void setIdAddresse(Integer idAddresse) {
+        this.idAddresse = idAddresse;
     }
 
     @Override

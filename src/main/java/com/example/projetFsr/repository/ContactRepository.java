@@ -1,6 +1,7 @@
 package com.example.projetFsr.repository;
 
 import com.example.projetFsr.configuration.JpaUtil;
+import com.example.projetFsr.model.Address;
 import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.PhoneNumber;
 import jakarta.persistence.EntityManager;
@@ -14,24 +15,27 @@ public class ContactRepository {
 
     @Autowired
     Contact contact;
+
     public boolean addContact(Contact contact) {
-
         boolean success = false;
-        try {
-            contact.setFirstName(contact.getFirstName());
-            contact.setLastName(contact.getLastName());
-            contact.setEmail(contact.getEmail());
-            contact.setAddress(contact.getAddress());
-            contact.setPhones(contact.getPhones());
-
-            EntityManager em = JpaUtil.getEmf().createEntityManager();
+        try (EntityManager em = JpaUtil.getEmf().createEntityManager()) {
             EntityTransaction tx = em.getTransaction();
             tx.begin();
 
+            Address address = contact.getAddress();
+            if (address.getIdAddresse() != null) {
+                address = em.find(Address.class, address.getIdAddresse());
+            } else {
+                em.persist(address);
+            }
+
+            contact.setAddress(address);
+            contact.setPhones(contact.getPhones());
+
+            // Persistez le contact
             em.persist(contact);
 
             tx.commit();
-            em.close();
             success = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,6 +43,7 @@ public class ContactRepository {
 
         return success;
     }
+
 
     public void deleteContact(Integer idContact) {
 
