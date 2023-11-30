@@ -1,21 +1,25 @@
 package com.example.projetFsr.model;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
+@Component
 @Entity
 @Table(name="phoneNumbers")
 public class PhoneNumber {
-
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long idPhoneNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPhoneNumber;
 
     private String phoneKind;
     private String phoneNumber;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    // Relation ManyToOne avec Contact
+    @ManyToOne
+    @JoinColumn(name = "contact_id")
     private Contact contact;
 
     public PhoneNumber() {
-        super();
+        // Constructeur par défaut
     }
 
     public PhoneNumber(String phoneKind, String phoneNumber) {
@@ -23,12 +27,14 @@ public class PhoneNumber {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getIdPhoneNumber() {
+    // Getters et Setters
+
+    public Long getIdPhoneNumber() {
         return idPhoneNumber;
     }
 
-    public void setIdPhoneNumber(long idPhoneNumber) {
-        this.idPhoneNumber = idPhoneNumber;
+    public void setIdPhoneNumber(Long id) {
+        this.idPhoneNumber = id;
     }
 
     public String getPhoneKind() {

@@ -7,42 +7,33 @@ import com.example.projetFsr.model.ContactGroup;
 import com.example.projetFsr.model.PhoneNumber;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
-import java.util.Set;
-
+@Repository
 public class ContactRepository {
-    public boolean addContact(String lastname, String firstname, String email) {
 
+    @Autowired
+    Contact contact;
+
+    public boolean addContact(Contact contact) {
         boolean success = false;
-        try {
-            EntityManager em = JpaUtil.getEmf().createEntityManager();
+        try (EntityManager em = JpaUtil.getEmf().createEntityManager()) {
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            Contact contact = new Contact(lastname, firstname, email);
-            Contact ethan = new Contact("riahi", "ethan", "eee");
-            Set<Contact> contacts = new HashSet<Contact>();
-            contacts.add(contact);
-            contacts.add(ethan);
-            ContactGroup cg1 = new ContactGroup("MIAGE");
-            ContactGroup cg2 = new ContactGroup("MIAGE2");
-            Set<ContactGroup> cgs = new HashSet<ContactGroup>();
-            cgs.add(cg1);
-            cgs.add(cg2);
-            contact.setCg(cgs);
-            cg1.setContact(contacts);
-            Address ad = new Address("Avenue de la Republique", "Nanterre", "92000", "France");
-            PhoneNumber ph_home = new PhoneNumber("home", "0123456789");
-            ph_home.setContact(contact);
-            PhoneNumber ph_port = new PhoneNumber("portable", "0612345678");
-            ph_port.setContact(contact);
-            Set<PhoneNumber> phs = new HashSet<PhoneNumber>();
-            phs.add(ph_home);
-            phs.add(ph_port);
-            contact.setAdress(ad);
-            ad.setContact(contact);
-            contact.setPhones(phs);
+
+            Address address = contact.getAddress();
+            if (address.getIdAddresse() != null) {
+                address = em.find(Address.class, address.getIdAddresse());
+            } else {
+                em.persist(address);
+            }
+
+            contact.setAddress(address);
+            contact.setPhones(contact.getPhones());
+
+            // Persistez le contact
             em.persist(contact);
             //em.persist(cg);
             tx.commit();
@@ -55,15 +46,16 @@ public class ContactRepository {
         return success;
     }
 
-    public void deleteContact(long idContact) {
+
+    public void deleteContact(Integer idContact) {
 
     }
 
-    public Contact getContact(long idContact) {
+    public Contact getContact(Integer idContact) {
         return null;
     }
 
-    public void modifyContact(long idContact, String fname, String lname, String email) {
+    public void modifyContact(Integer idContact, String fname, String lname, String email) {
 
     }
 }

@@ -1,44 +1,60 @@
 package com.example.projetFsr.model;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.stereotype.Component;
 
+@Component
 @Entity
-@Table(name="adresses")
+@Table(name = "adresses")
 public class Address {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long idAdresse;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idAddresse;
 
+    @NotNull
+    private Integer number;
+
+    @NotNull
     private String street;
+    @NotNull
     private String city;
+    @NotNull
     private String zip;
+    @NotNull
     private String country;
 
-    @OneToOne(mappedBy="address")
+    @OneToOne(mappedBy = "address")
     private Contact contact;
 
-
     public Address() {
-
     }
 
-
-    public Address(String street, String city, String zip, String country) {
+    public Address(Integer idAddresse, Integer number, String street, String city, String zip, String country, Contact contact) {
+        this.idAddresse = idAddresse;
+        this.number = number;
         this.street = street;
         this.city = city;
         this.zip = zip;
         this.country = country;
+        this.contact = contact;
     }
 
-
-
-    public long getIdAdresse() {
-        return idAdresse;
+    public Integer getIdAddresse() {
+        return idAddresse;
     }
 
-    public void setIdAdresse(long idAdresse) {
-        this.idAdresse = idAdresse;
+    public void setIdAdresse(Integer idAdresse) {
+        this.idAddresse = idAdresse;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getStreet() {
@@ -83,6 +99,22 @@ public class Address {
         this.contact = contact;
     }
 
+    public void setIdAddresse(Integer idAddresse) {
+        this.idAddresse = idAddresse;
+    }
+
+    @Override
+    public String toString() {
+        return "Adress{" +
+                "idAdresse=" + idAddresse +
+                ", number=" + number +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", zip='" + zip + '\'' +
+                ", country='" + country + '\'' +
+                ", contact=" + contact +
+                '}';
+    }
 
 
 }
