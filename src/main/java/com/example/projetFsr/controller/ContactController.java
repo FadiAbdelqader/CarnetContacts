@@ -21,6 +21,4 @@ public class ContactController {
         contact.setIdContact(idContact);
         return serviceContact.createContact(contact);
     }
-
-
 }
