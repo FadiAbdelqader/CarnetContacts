@@ -5,14 +5,14 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <!-- Unité de persistance -->
-    <persistence-unit name="projetFsr"
+    <persistence-unit name="projetJPA"
                       transaction-type="RESOURCE_LOCAL">
         <!-- Provider -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Entités -->
-        <class>com.example.projetFsr.model.Contact</class>
         <class>com.example.projetFsr.model.Address</class>
+        <class>com.example.projetFsr.model.Contact</class>
         <class>com.example.projetFsr.model.ContactGroup</class>
         <class>com.example.projetFsr.model.PhoneNumber</class>
 
@@ -20,8 +20,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
             <!-- Login -->
             <property name="javax.persistence.jdbc.user" value="root" />
             <!-- mot de passe -->
-            <property name="javax.persistence.jdbc.password"
-                      value="" />
+            <property name="javax.persistence.jdbc.password" value="" />
 
             <!-- Driver jdbc -->
             <property name="javax.persistence.jdbc.driver"
