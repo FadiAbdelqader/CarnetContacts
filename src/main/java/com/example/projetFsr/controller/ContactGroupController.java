@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
+
 @RestController
 @CrossOrigin("*")
 public class ContactGroupController {
@@ -30,7 +31,7 @@ public class ContactGroupController {
 
     @PostMapping("/createGroup")
     public boolean createGroup(@RequestBody ContactGroup contactGroup){
-        System.out.println("***contacts***" + contactGroup.getContact());
+        System.out.println("**contacts**" + contactGroup.getContact());
         return serviceGroupeContact.createGroupeContact(contactGroup);
     }
 
