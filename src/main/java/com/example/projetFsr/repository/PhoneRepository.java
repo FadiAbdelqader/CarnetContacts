@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class PhoneRepository {
         return success;
     }
 
+    /*
     public boolean deletePhoneById(PhoneNumber phone) {
         boolean success = false;
         try {
@@ -54,28 +56,37 @@ public class PhoneRepository {
         }
         return success;
     }
+*/
 
-    public PhoneNumber getPhoneById(PhoneNumber phone) {
-        PhoneNumber p=null;
+    public PhoneNumber getPhoneByID(Integer id) {
+        PhoneNumber phone = null;
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
         try {
-            EntityManager em = JpaUtil.getEmf().createEntityManager();
-            EntityTransaction tx = em.getTransaction();
             tx.begin();
-            p = em.find(PhoneNumber.class, phone.getIdPhoneNumber());
-            em.close();
+
+            TypedQuery<PhoneNumber> query = em.createQuery("SELECT pn FROM PhoneNumber pn WHERE pn.idPhoneNumber = :id", PhoneNumber.class);
+            query.setParameter("id", id);
+            phone = query.getSingleResult();
+            tx.commit();
         } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
             e.printStackTrace();
+        } finally {
+            em.close();
+            return phone;
         }
-        return p;
     }
 
-    public Set<PhoneNumber> getAllGroups() {
+    public Set<PhoneNumber> getAllPhones() {
         Set<PhoneNumber> phones = null;
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            TypedQuery<PhoneNumber> query = em.createQuery("SELECT pn FROM phoneNumbers pn", PhoneNumber.class);
+            TypedQuery<PhoneNumber> query = em.createQuery("SELECT pn FROM PhoneNumber pn", PhoneNumber.class);
             List<PhoneNumber> phonesList = query.getResultList();
             phones = new HashSet<>(phonesList);
             tx.commit();
@@ -89,9 +100,9 @@ public class PhoneRepository {
             return phones;
         }
     }
-
+/*
     public void modifyPhone(PhoneNumber pn, PhoneNumber newPhone) {
-        PhoneNumber phoneNumber = getPhoneById(pn);
+        PhoneNumber phoneNumber = getPhoneById(pn.getIdPhoneNumber());
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -112,6 +123,6 @@ public class PhoneRepository {
             em.close();
         }
     }
-
+*/
 
 }
