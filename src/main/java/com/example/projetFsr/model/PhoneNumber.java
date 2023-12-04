@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class PhoneNumber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPhoneNumber;
+    private Integer idPhoneNumber;
 
     private String phoneKind;
     private String phoneNumber;
@@ -29,11 +29,11 @@ public class PhoneNumber {
 
     // Getters et Setters
 
-    public Long getIdPhoneNumber() {
+    public Integer getIdPhoneNumber() {
         return idPhoneNumber;
     }
 
-    public void setIdPhoneNumber(Long id) {
+    public void setIdPhoneNumber(Integer id) {
         this.idPhoneNumber = id;
     }
 
