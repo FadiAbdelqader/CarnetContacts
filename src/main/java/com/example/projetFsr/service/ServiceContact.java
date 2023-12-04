@@ -1,5 +1,6 @@
 package com.example.projetFsr.service;
 
+import com.example.projetFsr.model.ContactDTO;
 import com.example.projetFsr.model.PhoneNumber;
 import com.example.projetFsr.repository.ContactRepository;
 import com.example.projetFsr.model.Contact;
@@ -17,19 +18,8 @@ public class ServiceContact {
 		return contactRepository.addContact(contact);
 	}
 
-	public void deleteContact(Integer idContact) {
-		ContactRepository daoc=new ContactRepository();
-		daoc.deleteContact(idContact);
-	}
-	
-	public Contact getContactById(Integer idContact) {
-		ContactRepository daoc=new ContactRepository();
-		return daoc.getContact(idContact);
-	}
-	
-	public void updateContact(Integer idContact, String fname, String lname, String email) {
-		ContactRepository daoc=new ContactRepository();
-		daoc.modifyContact(idContact, fname, lname, email);
-	}
-	
+
+    public List<ContactDTO> getContactInfo(Integer idContact) {
+		return contactRepository.getContactInfo(idContact);
+    }
 }
