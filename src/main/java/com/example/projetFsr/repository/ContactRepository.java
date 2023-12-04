@@ -88,11 +88,6 @@ public class ContactRepository {
             deletePhones.setParameter("idContact", idContact);
             deletePhones.executeUpdate();
 
-            // Suppression des associations ContactGroup
-/*            Query updateGroups = em.createQuery("DELETE FROM CTC_GRP cg WHERE cg.CTC_ID = :idContact");
-            updateGroups.setParameter("idContact", idContact);
-            updateGroups.executeUpdate();*/
-
             // Suppression du contact
             Query deleteContact = em.createQuery("DELETE FROM Contact c WHERE c.idContact = :idContact");
             deleteContact.setParameter("idContact", idContact);
