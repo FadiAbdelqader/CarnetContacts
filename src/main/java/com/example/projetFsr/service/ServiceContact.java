@@ -6,6 +6,7 @@ import com.example.projetFsr.repository.ContactRepository;
 import com.example.projetFsr.model.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -21,5 +22,9 @@ public class ServiceContact {
 
     public List<ContactDTO> getContactInfo(Integer idContact) {
 		return contactRepository.getContactInfo(idContact);
+    }
+
+    public void deleteContact(Integer idContact) {
+		contactRepository.deleteContact(idContact);
     }
 }

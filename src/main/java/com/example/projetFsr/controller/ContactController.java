@@ -23,6 +23,10 @@ public class ContactController {
         return serviceContact.createContact(contact);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/deleteContact")
+    public void deleteContact(@RequestParam Integer idContact){
+        serviceContact.deleteContact(idContact);
+    }
     @GetMapping("/getContactInfo")
     public List<ContactDTO> getContactInfo(@RequestParam Integer idContact){
         return serviceContact.getContactInfo(idContact);

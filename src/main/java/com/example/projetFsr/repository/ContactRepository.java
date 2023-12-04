@@ -4,6 +4,7 @@ import com.example.projetFsr.configuration.JpaUtil;
 import com.example.projetFsr.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -68,6 +69,55 @@ public class ContactRepository {
             em.close();
         }
     }
+
+
+
+    public void deleteContact(Integer idContact) {
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            // Récupérer l'idAdresse associé au contact
+            Query getAddressIdQuery = em.createQuery("SELECT a.idAddresse FROM Address a WHERE a.contact.idContact = :idContact", Integer.class);
+            getAddressIdQuery.setParameter("idContact", idContact);
+            Integer idAdresse = (Integer) getAddressIdQuery.getSingleResult();
+            System.out.println("idAdresse :"+idAdresse);
+            // Suppression des numéros de téléphone associés
+            Query deletePhones = em.createQuery("DELETE FROM PhoneNumber p WHERE p.contact.idContact = :idContact");
+            deletePhones.setParameter("idContact", idContact);
+            deletePhones.executeUpdate();
+
+            // Suppression des associations ContactGroup
+/*            Query updateGroups = em.createQuery("DELETE FROM CTC_GRP cg WHERE cg.CTC_ID = :idContact");
+            updateGroups.setParameter("idContact", idContact);
+            updateGroups.executeUpdate();*/
+
+            // Suppression du contact
+            Query deleteContact = em.createQuery("DELETE FROM Contact c WHERE c.idContact = :idContact");
+            deleteContact.setParameter("idContact", idContact);
+            deleteContact.executeUpdate();
+
+            // Suppression de l'adresse associée en utilisant l'idAdresse récupéré
+            if (idAdresse != null) {
+                Query deleteAddress = em.createQuery("DELETE FROM Address a WHERE a.idAddresse = :idAdresse");
+                deleteAddress.setParameter("idAdresse", idAdresse);
+                deleteAddress.executeUpdate();
+            }
+
+
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
 
 
 }
