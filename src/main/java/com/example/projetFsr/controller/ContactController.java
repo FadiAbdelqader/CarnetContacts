@@ -31,4 +31,9 @@ public class ContactController {
     public List<ContactDTO> getContactInfo(@RequestParam Integer idContact){
         return serviceContact.getContactInfo(idContact);
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/updateContact")
+    public void updateContact(@RequestBody Contact contact){
+        serviceContact.updateContact(contact);
+    }
 }

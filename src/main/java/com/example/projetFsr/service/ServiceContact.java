@@ -19,7 +19,6 @@ public class ServiceContact {
 		return contactRepository.addContact(contact);
 	}
 
-
     public List<ContactDTO> getContactInfo(Integer idContact) {
 		return contactRepository.getContactInfo(idContact);
     }
@@ -27,4 +26,8 @@ public class ServiceContact {
     public void deleteContact(Integer idContact) {
 		contactRepository.deleteContact(idContact);
     }
+
+	public void updateContact(Contact contact){
+		contactRepository.updateContact(contact);
+	}
 }

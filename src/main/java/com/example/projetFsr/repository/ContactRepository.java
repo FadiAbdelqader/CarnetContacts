@@ -51,8 +51,6 @@ public class ContactRepository {
         return success;
     }
 
-
-
     public List<ContactDTO> getContactInfo(Integer idContact) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         try {
@@ -69,8 +67,6 @@ public class ContactRepository {
             em.close();
         }
     }
-
-
 
     public void deleteContact(Integer idContact) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
@@ -113,6 +109,30 @@ public class ContactRepository {
         }
     }
 
+    public void updateContact(Contact contact) {
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Query query = em.createQuery("UPDATE Contact c SET c.firstName = :firstName, c.lastName = :lastName, c.email = :email WHERE c.idContact = :idContact");
+            query.setParameter("firstName", contact.getFirstName());
+            query.setParameter("lastName", contact.getLastName());
+            query.setParameter("email", contact.getEmail());
+            query.setParameter("idContact", contact.getIdContact());
+
+            query.executeUpdate();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 
 
 }
