@@ -1,10 +1,12 @@
 package com.example.projetFsr.service;
 
+import com.example.projetFsr.model.ContactDTO;
 import com.example.projetFsr.model.PhoneNumber;
 import com.example.projetFsr.repository.ContactRepository;
 import com.example.projetFsr.model.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,19 +19,16 @@ public class ServiceContact {
 		return contactRepository.addContact(contact);
 	}
 
-	public void deleteContact(Integer idContact) {
-		ContactRepository daoc=new ContactRepository();
-		daoc.deleteContact(idContact);
+    public List<ContactDTO> getContactInfo(Integer idContact) {
+		return contactRepository.getContactInfo(idContact);
+    }
+
+    public void deleteContact(Integer idContact) {
+		contactRepository.deleteContact(idContact);
+    }
+
+
+	public void updateContact(Contact contact){
+		contactRepository.updateContact(contact);
 	}
-	
-	public Contact getContactById(Integer idContact) {
-		ContactRepository daoc=new ContactRepository();
-		return daoc.getContact(idContact);
-	}
-	
-	public void updateContact(Integer idContact, String fname, String lname, String email) {
-		ContactRepository daoc=new ContactRepository();
-		daoc.modifyContact(idContact, fname, lname, email);
-	}
-	
 }
