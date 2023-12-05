@@ -68,4 +68,9 @@ public class ContactGroupController {
          */
     }
 
+    @PostMapping("/addContact")
+    public void addContact(@RequestParam Integer idGroup, @RequestParam Integer idContact){
+        serviceGroupeContact.addContact(idGroup,idContact);
+    }
+
 }

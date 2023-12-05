@@ -1,11 +1,14 @@
 package com.example.projetFsr.repository;
 
 import com.example.projetFsr.configuration.JpaUtil;
+import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
+import com.example.projetFsr.model.PhoneNumber;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import org.hibernate.tool.schema.internal.SchemaManagementToolInitiator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +28,6 @@ public class ContactGroupRepository{
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            //contactGroup.setGroupeName(groupName);
             em.persist(cg);
             tx.commit();
             em.close();
@@ -80,18 +82,25 @@ public class ContactGroupRepository{
     }
 
 
-    public ContactGroup getGroupById(ContactGroup cg) {
-        ContactGroup contactGroup=null;
+    public ContactGroup getGroupById(Integer id) {
+        ContactGroup cg = null;
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
         try {
-            EntityManager em = JpaUtil.getEmf().createEntityManager();
-            EntityTransaction tx = em.getTransaction();
             tx.begin();
-            contactGroup = em.find(ContactGroup.class, cg.getIdGroup());
-            em.close();
+            TypedQuery<ContactGroup> query = em.createQuery("SELECT cg FROM ContactGroup cg WHERE cg.id = :idGroup", ContactGroup.class);
+            query.setParameter("id", id);
+            cg = query.getSingleResult();
+            tx.commit();
         } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
             e.printStackTrace();
+        } finally {
+            em.close();
+            return cg;
         }
-        return contactGroup;
     }
 
     public ContactGroup getGroupByGroupName(ContactGroup cg) {
@@ -149,6 +158,27 @@ public class ContactGroupRepository{
                 tx.rollback();
             }
             e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void addContact(Integer contactGroupID, Integer contactID){
+        ContactGroup contactGroup = getGroupById(contactGroupID);
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        Contact contact = null;
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            contactGroup = em.find(ContactGroup.class,contactGroupID);
+            contact = em.find(Contact.class,contactID);
+            contactGroup.addContact(contact);
+            em.merge(contactGroup);
+            tx.commit();
+        } catch (Exception e) {
+            if(tx.isActive())
+                tx.rollback();
         } finally {
             em.close();
         }

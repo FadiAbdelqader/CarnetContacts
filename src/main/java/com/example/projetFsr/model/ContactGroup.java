@@ -13,12 +13,17 @@ public class ContactGroup {
     private String groupName;
 
 
-    @Transient
+
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="cg")
     private Set <Contact> contacts=new HashSet<Contact>();
 
     public ContactGroup() {
 
+    }
+
+    public void addContact(Contact contact){
+        this.contacts.add(contact);
+        contact.getCg().add(this);
     }
 
     public ContactGroup(String groupeName) {

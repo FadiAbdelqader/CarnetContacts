@@ -28,8 +28,8 @@ public class ContactRepository {
             tx.begin();
 
             Address address = contact.getAddress();
-            if (address.getIdAddresse() != null) {
-                address = em.find(Address.class, address.getIdAddresse());
+            if (address.getIdAddress() != null) {
+                address = em.find(Address.class, address.getIdAddress());
             } else {
                 em.persist(address);
             }
@@ -131,6 +131,27 @@ public class ContactRepository {
             throw e;
         } finally {
             em.close();
+        }
+    }
+
+    public Contact getContactByID(Integer id){
+        Contact ctc = null;
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+                TypedQuery<Contact> query = em.createQuery("SELECT ct FROM Contact ct WHERE ct.idContact = :id", Contact.class);
+            query.setParameter("id", id);
+            ctc = query.getSingleResult();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+            return ctc;
         }
     }
 }
