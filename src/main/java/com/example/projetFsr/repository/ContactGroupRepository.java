@@ -164,7 +164,7 @@ public class ContactGroupRepository{
     }
 
     public void addContact(Integer contactGroupID, Integer contactID){
-        ContactGroup contactGroup = getGroupById(contactGroupID);
+        ContactGroup contactGroup = null;
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         Contact contact = null;
         EntityTransaction tx = em.getTransaction();
@@ -174,6 +174,26 @@ public class ContactGroupRepository{
             contactGroup = em.find(ContactGroup.class,contactGroupID);
             contact = em.find(Contact.class,contactID);
             contactGroup.addContact(contact);
+            em.merge(contactGroup);
+            tx.commit();
+        } catch (Exception e) {
+            if(tx.isActive())
+                tx.rollback();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void removeContact(Integer contactGroupID, Integer contactID){
+        ContactGroup contactGroup = null;
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        Contact contact = null;
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            contactGroup = em.find(ContactGroup.class,contactGroupID);
+            contact = em.find(Contact.class,contactID);
+            contactGroup.removeContact(contact);
             em.merge(contactGroup);
             tx.commit();
         } catch (Exception e) {

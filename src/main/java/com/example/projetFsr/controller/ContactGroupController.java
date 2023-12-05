@@ -73,4 +73,8 @@ public class ContactGroupController {
         serviceGroupeContact.addContact(idGroup,idContact);
     }
 
+    @DeleteMapping("/removeContact")
+    public void removeContact(@RequestParam Integer idGroup, @RequestParam Integer idContact){
+        serviceGroupeContact.removeContact(idGroup,idContact);
+    }
 }

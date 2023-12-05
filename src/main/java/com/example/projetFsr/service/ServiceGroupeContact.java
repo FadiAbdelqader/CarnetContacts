@@ -46,4 +46,8 @@ public class ServiceGroupeContact {
         contactGroupRepository.addContact(contactGroupID,contactID);
     }
 
+    public void removeContact(Integer contactGroupID, Integer contactID){
+        contactGroupRepository.removeContact(contactGroupID,contactID);
+    }
+
 }

@@ -26,6 +26,11 @@ public class ContactGroup {
         contact.getCg().add(this);
     }
 
+    public void removeContact(Contact contact){
+        contact.getCg().remove(this);
+        this.contacts.remove(contact);
+    }
+
     public ContactGroup(String groupeName) {
         this.groupName = groupeName;
     }
