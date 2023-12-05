@@ -5,6 +5,9 @@ import com.example.projetFsr.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class ServiceAddress {
 
@@ -14,5 +17,20 @@ public class ServiceAddress {
     public Boolean createAddress(Address address) {
         return addressRepository.createAddress(address);
     }
+    public Address getAddressByID(Integer idAddress) {
+        return addressRepository.getAddressByID(idAddress);
+    }
+
+    public boolean deleteAddressByID(Integer idAddress) {
+        return addressRepository.deleteAddressById(idAddress);
+    }
+
+    public Set<Address> getAllAddresses(){return addressRepository.getAddresses();}
+
+    public void modifyAddress(Address address){
+        addressRepository.modifyAddress(address);
+    }
+
+
 }
 

@@ -11,7 +11,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAddresse;
+    private Integer idAddress;
 
     @NotNull
     private Integer number;
@@ -31,8 +31,8 @@ public class Address {
     public Address() {
     }
 
-    public Address(Integer idAddresse, Integer number, String street, String city, String zip, String country, Contact contact) {
-        this.idAddresse = idAddresse;
+    public Address(Integer idAddress, Integer number, String street, String city, String zip, String country, Contact contact) {
+        this.idAddress = idAddress;
         this.number = number;
         this.street = street;
         this.city = city;
@@ -41,12 +41,12 @@ public class Address {
         this.contact = contact;
     }
 
-    public Integer getIdAddresse() {
-        return idAddresse;
+    public Integer getIdAddress() {
+        return idAddress;
     }
 
     public void setIdAdresse(Integer idAdresse) {
-        this.idAddresse = idAdresse;
+        this.idAddress = idAdresse;
     }
 
     public Integer getNumber() {
@@ -99,14 +99,14 @@ public class Address {
         this.contact = contact;
     }
 
-    public void setIdAddresse(Integer idAddresse) {
-        this.idAddresse = idAddresse;
+    public void setIdAddress(Integer idAddress) {
+        this.idAddress = idAddress;
     }
 
     @Override
     public String toString() {
         return "Adress{" +
-                "idAdresse=" + idAddresse +
+                "idAdresse=" + idAddress +
                 ", number=" + number +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
