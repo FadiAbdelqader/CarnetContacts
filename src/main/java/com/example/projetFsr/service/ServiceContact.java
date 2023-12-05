@@ -27,6 +27,7 @@ public class ServiceContact {
 		contactRepository.deleteContact(idContact);
     }
 
+
 	public void updateContact(Contact contact){
 		contactRepository.updateContact(contact);
 	}
