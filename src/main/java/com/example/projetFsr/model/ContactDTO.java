@@ -1,21 +1,14 @@
 package com.example.projetFsr.model;
 
-import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.stereotype.Component;
 
-@Component
-@Entity
-@Table(name = "adresses")
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAddresse;
-
+public class ContactDTO {
+    Integer idContact;
+    private String firstName;
+    private String lastName;
+    private String email;
     @NotNull
     private Integer number;
-
     @NotNull
     private String street;
     @NotNull
@@ -25,29 +18,53 @@ public class Address {
     @NotNull
     private String country;
 
-    @OneToOne(mappedBy = "address")
-    private Contact contact;
-
-    public Address() {
+    public ContactDTO() {
     }
 
-    public Address(Integer idAddresse, Integer number, String street, String city, String zip, String country, Contact contact) {
-        this.idAddresse = idAddresse;
+    public ContactDTO(Integer idContact, String firstName, String lastName, String email, Integer number, String street, String city, String zip, String country) {
+        this.idContact = idContact;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.number = number;
         this.street = street;
         this.city = city;
         this.zip = zip;
         this.country = country;
-        this.contact = contact;
     }
 
-    public Integer getIdAddresse() {
-        return idAddresse;
+    public Integer getIdContact() {
+        return idContact;
     }
 
-    public void setIdAdresse(Integer idAdresse) {
-        this.idAddresse = idAdresse;
+    public void setIdContact(Integer idContact) {
+        this.idContact = idContact;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     public Integer getNumber() {
         return number;
@@ -89,31 +106,17 @@ public class Address {
         this.country = country;
     }
 
-
-    public Contact getContact() {
-        return contact;
-    }
-
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    public void setIdAddresse(Integer idAddresse) {
-        this.idAddresse = idAddresse;
-    }
-
     @Override
     public String toString() {
-        return "Adress{" +
-                "idAdresse=" + idAddresse +
+        return "ContactDTO{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
                 ", number=" + number +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", zip='" + zip + '\'' +
                 ", country='" + country + '\'' +
-                ", contact=" + contact +
                 '}';
     }
 }
-
