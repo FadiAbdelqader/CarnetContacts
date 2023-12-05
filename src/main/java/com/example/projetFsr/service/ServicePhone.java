@@ -23,4 +23,12 @@ public class ServicePhone {
         return phoneRepository.getPhoneByID(id);
     }
 
+    public boolean deletePhone(Integer id) {
+        return phoneRepository.deletePhoneById(id);
+    }
+
+    public void modifyPhone(PhoneNumber phoneNumber){
+        phoneRepository.modifyPhone(phoneNumber);
+    }
+
 }

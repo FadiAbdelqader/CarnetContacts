@@ -19,6 +19,8 @@ import java.util.Set;
 @Repository
 public class PhoneRepository {
 
+    @Autowired
+    PhoneNumber phoneNumber;
     public Boolean createNumberPhone(PhoneNumber phone) {
         boolean success = false;
         try {
@@ -35,16 +37,18 @@ public class PhoneRepository {
         return success;
     }
 
-    /*
-    public boolean deletePhoneById(PhoneNumber phone) {
+    public boolean deletePhoneById(Integer id) {
         boolean success = false;
+        PhoneNumber phone = null;
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            PhoneNumber phoneNumber = em.find(PhoneNumber.class, phone.getIdPhoneNumber());
-            if (phoneNumber != null) {
-                em.remove(phoneNumber); // Suppression de l'entité
+            TypedQuery<PhoneNumber> query = em.createQuery("SELECT pn FROM PhoneNumber pn WHERE pn.idPhoneNumber = :id", PhoneNumber.class);
+            query.setParameter("id", id);
+            phone = query.getSingleResult();
+            if (phone != null) {
+                em.remove(phone); // Suppression de l'entité
                 tx.commit();
                 success = true;
             } else {
@@ -56,7 +60,7 @@ public class PhoneRepository {
         }
         return success;
     }
-*/
+
 
     public PhoneNumber getPhoneByID(Integer id) {
         PhoneNumber phone = null;
@@ -64,7 +68,6 @@ public class PhoneRepository {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-
             TypedQuery<PhoneNumber> query = em.createQuery("SELECT pn FROM PhoneNumber pn WHERE pn.idPhoneNumber = :id", PhoneNumber.class);
             query.setParameter("id", id);
             phone = query.getSingleResult();
@@ -100,20 +103,17 @@ public class PhoneRepository {
             return phones;
         }
     }
-/*
-    public void modifyPhone(PhoneNumber pn, PhoneNumber newPhone) {
-        PhoneNumber phoneNumber = getPhoneById(pn.getIdPhoneNumber());
+
+    public void modifyPhone(PhoneNumber newPhone) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            Query updateQuery = em.createQuery("UPDATE phoneNumbers pn SET pn.phoneNumber = :newPn AND pn.phoneKind = :newPk WHERE pn.idPhoneNumber = :oldGroupName");
+            Query updateQuery = em.createQuery("UPDATE PhoneNumber pn SET pn.phoneNumber = :newPn WHERE pn.idPhoneNumber = :oldID");
             updateQuery.setParameter("newPn", newPhone.getPhoneNumber());
-            updateQuery.setParameter("newPk", newPhone.getPhoneKind());
-            updateQuery.setParameter("oldGroupName", pn.getIdPhoneNumber());
-            int rowsUpdated = updateQuery.executeUpdate();
+            updateQuery.setParameter("oldID", newPhone.getIdPhoneNumber());
+            updateQuery.executeUpdate();
             tx.commit();
-            System.out.println(rowsUpdated + " rows updated.");
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -123,6 +123,4 @@ public class PhoneRepository {
             em.close();
         }
     }
-*/
-
 }

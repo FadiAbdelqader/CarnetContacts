@@ -27,6 +27,12 @@ public class PhoneNumber {
         this.phoneNumber = phoneNumber;
     }
 
+    public PhoneNumber(Integer idPhoneNumber, String phoneNumber) {
+        super();
+        this.idPhoneNumber = idPhoneNumber;
+        this.phoneNumber = phoneNumber;
+    }
+
     // Getters et Setters
 
     public Integer getIdPhoneNumber() {

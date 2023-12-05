@@ -1,5 +1,6 @@
 package com.example.projetFsr.controller;
 
+import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
 import com.example.projetFsr.model.PhoneNumber;
 import com.example.projetFsr.service.ServicePhone;
@@ -15,7 +16,7 @@ import java.util.Set;
 public class PhoneController {
     @Autowired
     ServicePhone servicePhone;
-    @PostMapping("/createnumberphone")
+    @PostMapping("/createphone")
     public Boolean createNumberPhone(@RequestBody PhoneNumber phone){
         return servicePhone.createNumberPhone(phone);
     }
@@ -29,4 +30,16 @@ public class PhoneController {
     public String getPhoneByID(@RequestParam Integer idPhoneNumber){
         return servicePhone.getNumberByID(idPhoneNumber).toString();
     }
+
+    @DeleteMapping("/deletephone")
+    public boolean deletePhone(@RequestParam Integer idPhoneNumber){
+        return servicePhone.deletePhone(idPhoneNumber);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/modifyphone")
+    public void modifyPhone(@RequestBody PhoneNumber phoneNumber){
+        System.out.println("tostr : " + phoneNumber.getIdPhoneNumber() + " " + phoneNumber.getPhoneNumber());
+        servicePhone.modifyPhone(phoneNumber);
+    }
+
 }
