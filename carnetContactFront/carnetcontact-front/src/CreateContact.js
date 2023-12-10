@@ -9,14 +9,13 @@ export default function Home() {
 }
 
 function CreateContactForm() {
-    const inputStyle = { border: '3px solid', padding: '0.375rem 0.75rem' };
+    const inputStyle = {border: '3px solid', padding: '0.375rem 0.75rem'};
 
     const [state, setState] = useState({});
 
     const handleChangeStreetNumber = (event) => {
         const number = event.target.value;
         setState({...state, number: number});
-        console.log("nmb : ", number)
     }
 
     const handleChangeStreet = (event) => {
@@ -36,7 +35,22 @@ function CreateContactForm() {
         setState({...state, country: country});
     }
 
-    const handleSubmitAddress = (event) => {
+
+    const handleChangeFirstName = (event) => {
+        const firstName = event.target.value;
+        setState({...state, firstName: firstName});
+    }
+
+    const handleChangeLastName = (event) => {
+        const lastName = event.target.value;
+        setState({...state, lastName: lastName});
+    }
+    const handleChangeEmail = (event) => {
+        const email = event.target.value;
+        setState({...state, email: email});
+    }
+
+    async function handleSubmitAddress(event) {
         event.preventDefault();
 
         const userData = {
@@ -47,93 +61,108 @@ function CreateContactForm() {
             country: state.country
         };
 
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(userData)
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/createaddress', requestOptions);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const idAddress = await response.json(); // Supposant que la réponse est en JSON
+            console.log("Address created with ID:", idAddress);
+            return idAddress; // Retourne l'ID
+        } catch (error) {
+            console.log("Error in submitting address:", error.message);
+            return null; // Retourne null en cas d'erreur
+        }
+    }
+
+
+    const handleSubmitContact = async (event) => {
+        event.preventDefault();
+
+        const idAddress = await handleSubmitAddress(event);
+        console.log("l\'id de l\'adresse retourné est : ", idAddress);
+        const userData = {
+            firstName: state.firstName,
+            lastName: state.lastName,
+            email: state.email,
+            address: {
+                idAddress: idAddress
+            }
+        };
+
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userData)
         };
-        fetch('http://localhost:8080/createaddress', requestOptions)
+        fetch('http://localhost:8080/createcontact', requestOptions)
             .then(response => console.log("ok"))
             .catch(error => console.log(error.message))
     }
+
 
     return (
         <>
             <div className="container">
                 <h1 className="text-center my-4">Add a contact to your contact book</h1>
-                <form onSubmit={handleSubmitAddress}>
+                <form onSubmit={handleSubmitContact}>
                     <div className="row">
                         <div className="col-md-4 mb-3">
                             <label htmlFor="number">Number</label>
-                            <input type="text" className="form-control" id="number" name="number" value={state.number} placeholder="Enter number" onChange={handleChangeStreetNumber} style={inputStyle} />
+                            <input type="text" className="form-control" id="number" name="number" value={state.number}
+                                   placeholder="Enter number" onChange={handleChangeStreetNumber} style={inputStyle}/>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="street">Street</label>
-                            <input type="text" className="form-control" id="street" name="street" value={state.street} placeholder="Enter street" onChange={handleChangeStreet} style={inputStyle} />
+                            <input type="text" className="form-control" id="street" name="street" value={state.street}
+                                   placeholder="Enter street" onChange={handleChangeStreet} style={inputStyle}/>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="city">City</label>
-                            <input type="text" className="form-control" id="city" name="city" value={state.city} placeholder="Enter city" onChange={handleChangeCity} style={inputStyle} />
+                            <input type="text" className="form-control" id="city" name="city" value={state.city}
+                                   placeholder="Enter city" onChange={handleChangeCity} style={inputStyle}/>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="zip">ZIP Code</label>
-                            <input type="text" className="form-control" id="zip" name="zip" value={state.zip} placeholder="Enter ZIP code" onChange={handleChangeZip} style={inputStyle} />
+                            <input type="text" className="form-control" id="zip" name="zip" value={state.zip}
+                                   placeholder="Enter ZIP code" onChange={handleChangeZip} style={inputStyle}/>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="country">Country</label>
-                            <input type="text" className="form-control" id="country" name="country" value={state.country} placeholder="Enter country" onChange={handleChangeCountry} style={inputStyle} />
+                            <input type="text" className="form-control" id="country" name="country"
+                                   value={state.country} placeholder="Enter country" onChange={handleChangeCountry}
+                                   style={inputStyle}/>
                         </div>
                     </div>
 
                     <div className="row">
                         <div className="col-md-4 mb-3">
                             <label htmlFor="firstName">firstName</label>
-                            <input type="text" className="form-control" id="firstName" name="firstName" value={state.number} placeholder="Enter your firstname"  style={inputStyle} />
+                            <input type="text" className="form-control" id="firstName" name="firstName"
+                                   value={state.firstName} placeholder="Enter your firstname"
+                                   onChange={handleChangeFirstName} style={inputStyle}/>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="lastName">lastname</label>
-                            <input type="text" className="form-control" id="lastName" name="lastName" value={state.street} placeholder="Enter your lastname" style={inputStyle} />
+                            <input type="text" className="form-control" id="lastName" name="lastName"
+                                   value={state.lastName} placeholder="Enter your lastname"
+                                   onChange={handleChangeLastName} style={inputStyle}/>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="email">E-mail</label>
-                            <input type="text" className="form-control" id="email" name="email" value={state.city} placeholder="Enter your E-mail" onChange={handleChangeCity} style={inputStyle} />
+                            <input type="text" className="form-control" id="email" name="email" value={state.email}
+                                   placeholder="Enter your E-mail" onChange={handleChangeEmail} style={inputStyle}/>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <div className="text-center">
-                        <button type="submit" className="btn btn-primary btn-lg mt-2" >Add Contact</button>
+                        <button type="submit" className="btn btn-primary btn-lg mt-2">Add Contact</button>
                     </div>
                 </form>
             </div>
