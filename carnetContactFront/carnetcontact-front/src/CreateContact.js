@@ -50,6 +50,16 @@ function CreateContactForm() {
         setState({...state, email: email});
     }
 
+    const handleChangePhoneNumber = (event) => {
+        const phoneNumber = event.target.value;
+        setState({...state, phoneNumber: phoneNumber});
+    }
+
+    const handleChangePhoneKind = (event) => {
+        const phoneKind = event.target.value;
+        setState({...state, phoneKind: phoneKind});
+    }
+
     async function handleSubmitAddress(event) {
         event.preventDefault();
 
@@ -81,8 +91,7 @@ function CreateContactForm() {
         }
     }
 
-
-    const handleSubmitContact = async (event) => {
+    async function handleSubmitContact(event) {
         event.preventDefault();
 
         const idAddress = await handleSubmitAddress(event);
@@ -102,17 +111,50 @@ function CreateContactForm() {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userData)
         };
-        fetch('http://localhost:8080/createcontact', requestOptions)
+
+        try {
+            const response = await fetch('http://localhost:8080/createcontact', requestOptions);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const idContact = await response.json();
+            console.log("Contact created with ID:", idContact);
+            return idContact;
+        } catch (error) {
+            console.log("Error in submitting address:", error.message);
+            return null; // Retourne null en cas d'erreur
+        }
+    }
+
+    const handleSubmitNumberPhone = async (event) => {
+        event.preventDefault();
+
+        const idContact = await handleSubmitContact(event);
+        console.log("l\'id du contact retourné est : ", idContact);
+
+        const phoneData = {
+            phoneKind: state.phoneKind,
+            phoneNumber: state.phoneNumber,
+            contact: {
+                idContact: idContact
+            }
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(phoneData)
+        };
+        fetch('http://localhost:8080/createphone', requestOptions)
             .then(response => console.log("ok"))
             .catch(error => console.log(error.message))
     }
-
 
     return (
         <>
             <div className="container">
                 <h1 className="text-center my-4">Add a contact to your contact book</h1>
-                <form onSubmit={handleSubmitContact}>
+                <form onSubmit={handleSubmitNumberPhone}>
                     <div className="row">
                         <div className="col-md-4 mb-3">
                             <label htmlFor="number">Number</label>
@@ -161,6 +203,22 @@ function CreateContactForm() {
                                    placeholder="Enter your E-mail" onChange={handleChangeEmail} style={inputStyle}/>
                         </div>
                     </div>
+
+                    <div className="row">
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="phoneKind">phone Kind</label>
+                            <input type="text" className="form-control" id="phoneKind" name="phoneKind"
+                                   value={state.phoneKind} placeholder="Enter the phone kind"
+                                   onChange={handleChangePhoneKind} style={inputStyle}/>
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="phoneNumber">phone Number</label>
+                            <input type="text" className="form-control" id="phoneNumber" name="phoneNumber"
+                                   value={state.phoneNumber} placeholder="Enter the phoneNumber"
+                                   onChange={handleChangePhoneNumber} style={inputStyle}/>
+                        </div>
+                    </div>
+
                     <div className="text-center">
                         <button type="submit" className="btn btn-primary btn-lg mt-2">Add Contact</button>
                     </div>
@@ -169,6 +227,32 @@ function CreateContactForm() {
         </>
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
