@@ -35,9 +35,13 @@ function Hello(){
 }
 
 function MyContacts(){
+    const navigate = useNavigate();
+    function HandlclickButton(){
+        navigate('/myContact')
+    }
     return(
         <>
-            <button className="btn btn-primary"> My contacts </button>
+            <button className="btn btn-primary" onClick={HandlclickButton}> My contacts </button>
         </>
     )
 }

@@ -1,8 +1,10 @@
 import React, {useState} from "react";
+import {HomePage} from "./Mycontacts";
 
 export default function Home() {
     return (
         <>
+            <HomePage/>
             <CreateContactForm/>
         </>
     );
