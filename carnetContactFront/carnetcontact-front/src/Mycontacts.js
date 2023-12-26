@@ -55,18 +55,51 @@ function ContactsSummary({ onContactSelect }) {
         }
     }
 
+
+    async function deleteContacts(idContact) {
+        const option = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/deleteContact?idContact=${idContact}`, option);
+            if (response.ok) {
+                // Supprimez le contact de l'état local après la suppression réussie
+                setContacts(contacts.filter(contact => contact.idContact !== idContact));
+            } else {
+                console.error('Suppression du contact : ERREUR!');
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     return (
         <div className="container mt-4">
             <table className="table table-bordered">
                 <thead>
                 <tr>
                     <th>Contacts</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {contacts.map((contact) => (
-                    <tr key={contact.idContact} onClick={() => onContactSelect(contact.idContact)}>
-                        <td>{contact.firstName} {contact.lastName}</td>
+                    <tr key={contact.idContact}>
+                        <td onClick={() => onContactSelect(contact.idContact)}>
+                            {contact.firstName} {contact.lastName}
+                        </td>
+                        <td>
+                            <button
+                                className="btn btn-danger"
+                                onClick={() => deleteContacts(contact.idContact)}
+                            >
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
@@ -106,21 +139,17 @@ function MessageWindow({ selectedContactId }) {
     }
 
     if (!contactInfo) {
-        return <div>Loading...</div>;
+        return <div>Select a contact to see his information</div>;
     }
 
     return (
         <div className="card">
             <div className="card-body">
-                <h5 className="card-title">Contact Details</h5>
+                <h5 className="card-title">Contact Details : </h5>
                 <p className="card-text"><strong>First Name:</strong> {contactInfo.firstName}</p>
                 <p className="card-text"><strong>Last Name:</strong> {contactInfo.lastName}</p>
                 <p className="card-text"><strong>Email:</strong> {contactInfo.email}</p>
-                <p className="card-text"><strong>Number:</strong> {contactInfo.number}</p>
-                <p className="card-text"><strong>Street:</strong> {contactInfo.street}</p>
-                <p className="card-text"><strong>City:</strong> {contactInfo.city}</p>
-                <p className="card-text"><strong>ZIP:</strong> {contactInfo.zip}</p>
-                <p className="card-text"><strong>Country:</strong> {contactInfo.country}</p>
+                <p className="card-text"><strong>Address:</strong> {contactInfo.number}, {contactInfo.street} in {contactInfo.city} {contactInfo.zip} {contactInfo.country}</p>
                 <p className="card-text"><strong>Phone Kind:</strong> {contactInfo.phoneKind}</p>
                 <p className="card-text"><strong>Phone Number:</strong> {contactInfo.phoneNumber}</p>
             </div>
