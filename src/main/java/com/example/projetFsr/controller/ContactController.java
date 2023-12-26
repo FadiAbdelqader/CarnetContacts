@@ -17,7 +17,7 @@ public class ContactController {
     @Autowired
     ServiceContact serviceContact;
     @PostMapping("/createcontact")
-    public Boolean createContact(@RequestBody Contact contact){
+    public Integer createContact(@RequestBody Contact contact){
         Integer idContact = contact.getIdContact();
         contact.setIdContact(idContact);
         return serviceContact.createContact(contact);
@@ -28,6 +28,10 @@ public class ContactController {
         serviceContact.deleteContact(idContact);
     }
 
+    @GetMapping("/getAllContact")
+    public List<ContactDTO> getAllContact(){
+        return serviceContact.getAllContact();
+    }
     @GetMapping("/getContactInfo")
     public List<ContactDTO> getContactInfo(@RequestParam Integer idContact){
         return serviceContact.getContactInfo(idContact);
@@ -36,5 +40,10 @@ public class ContactController {
     @RequestMapping(method = RequestMethod.PUT, value = "/updateContact")
     public void updateContact(@RequestBody Contact contact){
         serviceContact.updateContact(contact);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/updateAContact")
+    public void updateAContact(@RequestBody ContactDTO contactDTO){
+        serviceContact.updateAContact(contactDTO);
     }
 }

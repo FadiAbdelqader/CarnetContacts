@@ -13,22 +13,32 @@ import java.util.List;
 @Service
 public class ServiceContact {
 
-	@Autowired
-	ContactRepository contactRepository;
-	public Boolean createContact(Contact contact) {
-		return contactRepository.addContact(contact);
-	}
+    @Autowired
+    ContactRepository contactRepository;
+
+    public Integer createContact(Contact contact) {
+        return contactRepository.addContact(contact);
+    }
+
+    public List<ContactDTO> getAllContact() {
+        return contactRepository.getAllContact();
+    }
 
     public List<ContactDTO> getContactInfo(Integer idContact) {
-		return contactRepository.getContactInfo(idContact);
+        return contactRepository.getContactInfo(idContact);
     }
 
     public void deleteContact(Integer idContact) {
-		contactRepository.deleteContact(idContact);
+        contactRepository.deleteContact(idContact);
     }
 
 
-	public void updateContact(Contact contact){
-		contactRepository.updateContact(contact);
-	}
+    public void updateContact(Contact contact) {
+        contactRepository.updateContact(contact);
+    }
+
+
+    public void updateAContact(ContactDTO contactDTO) {
+        contactRepository.updateAContact(contactDTO);
+    }
 }

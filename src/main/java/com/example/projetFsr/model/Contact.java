@@ -21,12 +21,11 @@ public class Contact {
     private Integer idContact;
 
     @OneToOne
-    @JoinColumn(name="idAddresse")
+    @JoinColumn(name="idAddress")
     Address address=null;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="idPhoneNumber")
-    Set<PhoneNumber> phones =new HashSet<PhoneNumber>();
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    private Set<PhoneNumber> phones = new HashSet<PhoneNumber>();
 
     @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(name="CTC_GRP", joinColumns=@JoinColumn(name="CTC_ID"), inverseJoinColumns=@JoinColumn(name="GRP_ID"))

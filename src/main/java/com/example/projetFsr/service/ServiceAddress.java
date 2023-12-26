@@ -14,7 +14,7 @@ public class ServiceAddress {
     @Autowired
     AddressRepository addressRepository;
 
-    public Boolean createAddress(Address address) {
+    public Integer createAddress(Address address) {
         return addressRepository.createAddress(address);
     }
     public Address getAddressByID(Integer idAddress) {
