@@ -3,12 +3,14 @@ import {useNavigate} from "react-router-dom";
 
 export default function MyContacts() {
     const [selectedContactId, setSelectedContactId] = useState(null);
+    const [contactToUpdate, setContactToUpdate] = useState(null);
 
     return (
         <>
-            <HomePage />
-            <ContactsSummary onContactSelect={setSelectedContactId} />
-            <MessageWindow selectedContactId={selectedContactId} />
+            <HomePage/>
+            <ContactsSummary onContactSelect={setSelectedContactId} onUpdateContactSelect={setContactToUpdate}/>
+            <ContactWindow selectedContactId={selectedContactId} />
+            {contactToUpdate && <UpdateContactWindow contactInfo={contactToUpdate} />}
         </>
     );
 }
@@ -27,7 +29,7 @@ export function HomePage() {
     );
 }
 
-function ContactsSummary({ onContactSelect }) {
+function ContactsSummary({ onContactSelect, onUpdateContactSelect }) {
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
@@ -93,11 +95,11 @@ function ContactsSummary({ onContactSelect }) {
                             {contact.firstName} {contact.lastName}
                         </td>
                         <td>
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => deleteContacts(contact.idContact)}
-                            >
+                            <button className="btn btn-danger" onClick={() => deleteContacts(contact.idContact)}>
                                 Delete
+                            </button>
+                            <button className="btn btn-primary" onClick={() => onUpdateContactSelect(contact)}>
+                                Update
                             </button>
                         </td>
                     </tr>
@@ -108,7 +110,7 @@ function ContactsSummary({ onContactSelect }) {
     );
 }
 
-function MessageWindow({ selectedContactId }) {
+function ContactWindow({ selectedContactId }) {
     const [contactInfo, setContactInfo] = useState(null);
 
     useEffect(() => {
@@ -156,3 +158,124 @@ function MessageWindow({ selectedContactId }) {
         </div>
     );
 }
+
+function UpdateContactWindow({ contactInfo }) {
+    // Décomposition de contactInfo pour faciliter l'accès aux champs
+    const { firstName, lastName, email, number, street, city, zip, country, phoneKind, phoneNumber } = contactInfo;
+
+    const [state, setState] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        number: '',
+        street: '',
+        city: '',
+        zip: '',
+        country: '',
+        phoneKind: '',
+        phoneNumber: ''
+    });
+
+    // Mise à jour de l'état lorsque contactInfo change
+    useEffect(() => {
+        if (contactInfo) {
+            setState({
+                firstName: contactInfo.firstName,
+                lastName: contactInfo.lastName,
+                email: contactInfo.email,
+                number: contactInfo.number,
+                street: contactInfo.street,
+                city: contactInfo.city,
+                zip: contactInfo.zip,
+                country: contactInfo.country,
+                phoneKind: contactInfo.phoneKind,
+                phoneNumber: contactInfo.phoneNumber
+            });
+        }
+    }, [contactInfo]);
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setState({ ...state, [name]: value });
+    };
+
+    async function handleSubmitContact(event) {
+        event.preventDefault();
+        const userData = {
+            ...state,
+            idContact: contactInfo.idContact
+        };
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/updateAContact', requestOptions);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const idContact = await response.json();
+            console.log("Contact updated with ID:", idContact);
+        } catch (error) {
+            console.error("Error in updating contact:", error.message);
+        }
+    }
+
+    return (
+        <div className="card">
+            <div className="card-body">
+                <h5 className="card-title">Update {state.firstName} {state.lastName} :</h5>
+                <form onSubmit={handleSubmitContact}>
+                    <div>
+                        <strong>First Name:</strong>
+                        <input type="text" name="firstName" value={state.firstName} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Last Name:</strong>
+                        <input type="text" name="lastName" value={state.lastName} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Email:</strong>
+                        <input type="text" name="email" value={state.email} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Number:</strong>
+                        <input type="text" name="number" value={state.number} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Street:</strong>
+                        <input type="text" name="street" value={state.street} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>City:</strong>
+                        <input type="text" name="city" value={state.city} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>ZIP:</strong>
+                        <input type="text" name="zip" value={state.zip} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Country:</strong>
+                        <input type="text" name="country" value={state.country} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Phone Kind:</strong>
+                        <input type="text" name="phoneKind" value={state.phoneKind} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <strong>Phone Number:</strong>
+                        <input type="text" name="phoneNumber" value={state.phoneNumber} onChange={handleChange} />
+                    </div>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    );
+}
+
+
+
+
