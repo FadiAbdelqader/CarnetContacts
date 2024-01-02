@@ -1,52 +1,46 @@
 import {HomePage} from "./Mycontacts";
 import React, {useEffect, useState} from "react";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider, useDrag, useDrop} from "react-dnd";
 
 export default function CreateGroup() {
+    const [selectedGroup, setSelectedGroup] = useState(null);
+    const [selectedContact, setSelectedContact] = useState([]);
     return (
         <>
-            <HomePage />
-            <div className="container mt-4">
-                <div className="row">
-                    <div className="col-lg-6">
-                        <CreateGroupForm />
-                    </div>
-                    <div className="col-lg-6">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">Contacts Summary</h5>
-                                <ContactsSummary />
+            <DndProvider backend={HTML5Backend}>
+                <HomePage/>
+                <CreateGroupForm/>
+                <div className="container mt-4">
+                    <div className="row">
+                        {/* Left Side: GroupsSummary and ContactsSummary */}
+                        <div className="col-md-6">
+                            <div className="row">
+                                <div className="col-md-12 mb-4">
+                                    <GroupsSummary setSelectedGroup={setSelectedGroup}/>
+                                </div>
+                                <div className="col-md-12">
+                                    <ContactsSummary setSelectedContact={setSelectedContact}/>
+                                </div>
                             </div>
+                        </div>
+                        {/* Right Side: AddContactWindow */}
+                        <div className="col-md-6">
+                            <AddContactWindow selectedGroup={selectedGroup} selectedContact={selectedContact}/>
                         </div>
                     </div>
                 </div>
-                <div className="row mt-4">
-                    <div className="col-lg-6">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">Groups Summary</h5>
-                                <GroupsSummary />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-6">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">Add Contact Window</h5>
-                                <AddContactWindow />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </DndProvider>
         </>
     );
 }
+
 function CreateGroupForm() {
     const [state, setState] = useState({groupName: ""});
 
     const handleChangeGroupName = (event) => {
         const groupName = event.target.value;
-        setState({...state, groupName: groupName}); // Correction de la clé pour correspondre à la casse
+        setState({...state, groupName: groupName});
     };
 
     async function handleSubmitCreateGroup(event) {
@@ -91,7 +85,8 @@ function CreateGroupForm() {
         </>
     );
 }
-function GroupsSummary() {
+
+function GroupsSummary({setSelectedGroup}) {
     const [groups, setGroups] = useState([]);
 
     useEffect(() => {
@@ -119,27 +114,9 @@ function GroupsSummary() {
         }
     }
 
-
-    async function deleteContacts(idContact) {
-        const option = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-
-        try {
-            const response = await fetch(`http://localhost:8080/deleteContact?idContact=${idContact}`, option);
-            if (response.ok) {
-                // Supprimez le contact de l'état local après la suppression réussie
-                setGroups(groups.filter(contact => contact.idContact !== idContact));
-            } else {
-                console.error('Suppression du contact : ERREUR!');
-            }
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
+    const handleGroupClick = (group) => {
+        setSelectedGroup(group);
+    };
 
     return (
         <div className="container mt-4">
@@ -151,10 +128,8 @@ function GroupsSummary() {
                 </thead>
                 <tbody>
                 {groups.map((group) => (
-                    <tr key={group.idContact}>
-                        <td>
-                            {group.groupName}
-                        </td>
+                    <tr key={group.idGroup} onClick={() => handleGroupClick(group)}>
+                        <td>{group.groupName}</td>
                     </tr>
                 ))}
                 </tbody>
@@ -162,7 +137,24 @@ function GroupsSummary() {
         </div>
     );
 }
-function ContactsSummary() {
+
+function TD({contact, setSelectedContact}){
+ const [selected, setSelected] = useState(false);
+  const [{isDragging}, drag] = useDrag(() => ({
+        type: "box",
+        item: {},
+        end: (item, monitor) => {
+            setSelected(true)
+            setSelectedContact((prevContact)=>[...prevContact, contact])
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+            handlerId: monitor.getHandlerId(),
+        }),
+    }))
+    return <td ref={selected?undefined:drag}>{contact.firstName} {contact.lastName}</td>
+}
+function ContactsSummary({setSelectedContact}) {
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
@@ -190,28 +182,6 @@ function ContactsSummary() {
         }
     }
 
-
-    async function deleteContacts(idContact) {
-        const option = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-
-        try {
-            const response = await fetch(`http://localhost:8080/deleteContact?idContact=${idContact}`, option);
-            if (response.ok) {
-                // Supprimez le contact de l'état local après la suppression réussie
-                setContacts(contacts.filter(contact => contact.idContact !== idContact));
-            } else {
-                console.error('Suppression du contact : ERREUR!');
-            }
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
     return (
         <div className="container mt-4">
             <table className="table table-bordered">
@@ -223,9 +193,9 @@ function ContactsSummary() {
                 <tbody>
                 {contacts.map((contact) => (
                     <tr key={contact.idContact}>
-                        <td>
-                            {contact.firstName} {contact.lastName}
-                        </td>
+                        <TD setSelectedContact={setSelectedContact} contact={contact}>
+
+                        </TD>
                     </tr>
                 ))}
                 </tbody>
@@ -233,7 +203,38 @@ function ContactsSummary() {
         </div>
     );
 }
-function AddContactWindow() {
+
+function AddContactWindow({selectedGroup, selectedContact}) {
+
+    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+        accept: "box",
+        drop: () => ({ name: 'AddContactWindow' }),
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    }))
+
+    console.log("selectedGroup", selectedGroup)
+
+    async function handleAddContactToGroup(event) {
+        const requestOptions = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+        };
+
+        try {
+            const contactList = selectedContact.reduce((acc, contact)=>`${acc}&idContacts=${contact.idContact}`, "")
+            const response = await fetch(`http://localhost:8080/addContact?idGroup=${selectedGroup.idGroup}${contactList}`, requestOptions);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            console.log("ok!!!!!");
+
+        } catch (error) {
+            console.log("Error in submitting address:", error.message);
+        }
+    }
 
     return (
         <>
@@ -241,14 +242,63 @@ function AddContactWindow() {
                 <div className="card border-primary-subtle mb-3"
                      style={{width: '70%', maxWidth: '120rem', height: '80%'}}>
                     <div className="card-header bg-transparent border-success">
-                        <h2>Group name</h2>
+                        <h2>{selectedGroup ? selectedGroup.groupName : "Select a group"}</h2>
                     </div>
-                    <div className="card-body text-success">
+                    <div ref={drop} className="card-body text-success">
                         <p>drag and drop contacts here</p>
+                        <div className="container mt-4">
+                            <table className="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Contacts</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {selectedContact.map((contact) => (
+                                    <tr key={contact.idContact}>
+                                        <td>
+                                            {contact.firstName} {contact.lastName}
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <button className="btn btn-primary">Send</button>
+                    <button className="btn btn-primary" onClick={handleAddContactToGroup}>Send</button>
                 </div>
             </div>
         </>
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
