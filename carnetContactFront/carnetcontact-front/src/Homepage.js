@@ -67,9 +67,13 @@ function MyGroups(){
 }
 
 function AddGroup(){
+    const navigate = useNavigate();
+    function HandlclickButton(){
+        navigate('/createGroup')
+    }
     return(
         <>
-            <button className="btn btn-primary"> Add Groups </button>
+            <button className="btn btn-primary" onClick={HandlclickButton}> Create Groups </button>
         </>
     )
 }

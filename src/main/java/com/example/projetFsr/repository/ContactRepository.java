@@ -67,7 +67,6 @@ public class ContactRepository {
         } finally {
             em.close();
         }
-
     }
     public List<ContactDTO> getContactInfo(Integer idContact) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();

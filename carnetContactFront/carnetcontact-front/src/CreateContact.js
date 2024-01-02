@@ -19,7 +19,6 @@ function CreateContactForm() {
         const number = event.target.value;
         setState({...state, number: number});
     }
-
     const handleChangeStreet = (event) => {
         const street = event.target.value;
         setState({...state, street: street});
@@ -36,13 +35,10 @@ function CreateContactForm() {
         const country = event.target.value;
         setState({...state, country: country});
     }
-
-
     const handleChangeFirstName = (event) => {
         const firstName = event.target.value;
         setState({...state, firstName: firstName});
     }
-
     const handleChangeLastName = (event) => {
         const lastName = event.target.value;
         setState({...state, lastName: lastName});
@@ -51,12 +47,10 @@ function CreateContactForm() {
         const email = event.target.value;
         setState({...state, email: email});
     }
-
     const handleChangePhoneNumber = (event) => {
         const phoneNumber = event.target.value;
         setState({...state, phoneNumber: phoneNumber});
     }
-
     const handleChangePhoneKind = (event) => {
         const phoneKind = event.target.value;
         setState({...state, phoneKind: phoneKind});

@@ -5,6 +5,7 @@ import App from './App';
 import Homepage from "./Homepage"
 import CreateContact from './CreateContact'
 import Mycontacts from "./Mycontacts";
+import CreateGroup from "./CreateGroup";
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AuthProvider} from "./AuthContext";
@@ -17,6 +18,7 @@ root.render(
                 <Route path='/homepage' element = {<Homepage/>}/>
                 <Route path='/createcontact' element = {<CreateContact/>}/>
                 <Route path='/myContact' element = {<Mycontacts/>}/>
+                <Route path='/createGroup' element = {<CreateGroup/>}/>
             </Routes>
         </AuthProvider>
     </BrowserRouter>

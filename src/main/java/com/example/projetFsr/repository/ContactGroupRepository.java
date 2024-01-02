@@ -1,14 +1,11 @@
 package com.example.projetFsr.repository;
 
 import com.example.projetFsr.configuration.JpaUtil;
-import com.example.projetFsr.model.Contact;
-import com.example.projetFsr.model.ContactGroup;
-import com.example.projetFsr.model.PhoneNumber;
+import com.example.projetFsr.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.tool.schema.internal.SchemaManagementToolInitiator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,21 +19,24 @@ public class ContactGroupRepository{
     @Autowired
     ContactGroup contactGroup;
 
-    public boolean createGroup(ContactGroup cg) {
-        boolean success = false;
+    public long createGroup(GroupDTO groupDto) {
+        long idGroup = -1; // Valeur par défaut indiquant l'échec
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
-            em.persist(cg);
+
+            ContactGroup newGroup = new ContactGroup(groupDto.getGroupName());
+            em.persist(newGroup);
+
             tx.commit();
+            idGroup = newGroup.getIdGroup(); // Récupérer l'ID après la persistance
+
             em.close();
-            success = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return success;
-
+        return idGroup;
     }
 
     public boolean deleteGroupById(ContactGroup cg) {
@@ -82,24 +82,22 @@ public class ContactGroupRepository{
     }
 
 
-    public ContactGroup getGroupById(Integer id) {
-        ContactGroup cg = null;
+    public List<GroupDTO> getGroupById(Long idGroup) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
-            TypedQuery<ContactGroup> query = em.createQuery("SELECT cg FROM ContactGroup cg WHERE cg.id = :idGroup", ContactGroup.class);
-            query.setParameter("id", id);
-            cg = query.getSingleResult();
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            e.printStackTrace();
+            String jpql =
+                    "SELECT new com.example.projetFsr.model.GroupDTO(g.idGroup, g.groupName) " +
+                            "FROM ContactGroup g " +
+                            "WHERE g.idGroup = :idGroup";
+
+            TypedQuery<GroupDTO> query = em.createQuery(jpql, GroupDTO.class);
+            query.setParameter("idGroup", idGroup);
+
+            return query.getResultList();
         } finally {
-            em.close();
-            return cg;
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
@@ -120,24 +118,19 @@ public class ContactGroupRepository{
         return contactGroup;
     }
 
-    public Set<ContactGroup> getAllGroups() {
-        Set<ContactGroup> contactGroups = null;
+    public List<GroupDTO> getAllGroups() {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
-            TypedQuery<ContactGroup> query = em.createQuery("SELECT cg FROM ContactGroup cg", ContactGroup.class);
-            List<ContactGroup> groupsList = query.getResultList();
-            contactGroups = new HashSet<>(groupsList);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            e.printStackTrace();
+            String jpql =
+                    "SELECT new com.example.projetFsr.model.GroupDTO(g.idGroup, g.groupName) " +
+                            "FROM ContactGroup g " +
+                            "ORDER BY g.groupName ASC";
+
+            TypedQuery<GroupDTO> query = em.createQuery(jpql, GroupDTO.class);
+
+            return query.getResultList();
         } finally {
             em.close();
-            return contactGroups;
         }
     }
 

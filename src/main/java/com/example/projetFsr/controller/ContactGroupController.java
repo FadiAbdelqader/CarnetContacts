@@ -1,12 +1,13 @@
 package com.example.projetFsr.controller;
 
-import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
+import com.example.projetFsr.model.GroupDTO;
 import com.example.projetFsr.repository.GroupModificationDTO;
 import com.example.projetFsr.service.ServiceGroupeContact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -17,27 +18,19 @@ public class ContactGroupController {
     @Autowired
     ServiceGroupeContact serviceGroupeContact;
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
-    }
-
-    @GetMapping("/getGroups")
-    public String getGroups(){
-        Set<ContactGroup> gl=null;
-        gl = serviceGroupeContact.getGroups();
-        return gl.toString();
+    @GetMapping("/getAllGroups")
+    public List<GroupDTO> getAllGroups(){
+        return serviceGroupeContact.getAllGroups();
     }
 
     @PostMapping("/createGroup")
-    public boolean createGroup(@RequestBody ContactGroup contactGroup){
-        System.out.println("**contacts**" + contactGroup.getContact());
-        return serviceGroupeContact.createGroupeContact(contactGroup);
+    public long createGroup(@RequestBody GroupDTO group){
+        return serviceGroupeContact.createGroupe(group);
     }
 
     @GetMapping("/getgroupbyid")
-    public ContactGroup getGroupeById(@RequestBody ContactGroup contactGroup){
-        return serviceGroupeContact.getGroupById(contactGroup);
+    public List<GroupDTO> getGroupeById(@RequestParam long idGroup){
+        return serviceGroupeContact.getGroupById(idGroup);
     }
     @GetMapping("/getgroupbyname")
     public ContactGroup getGroupeByName(@RequestBody ContactGroup contactGroup){
@@ -69,8 +62,8 @@ public class ContactGroupController {
     }
 
     @PostMapping("/addContact")
-    public void addContact(@RequestParam Integer idGroup, @RequestParam Integer idContact){
-        serviceGroupeContact.addContact(idGroup,idContact);
+    public void addContacts(@RequestParam Integer idGroup, @RequestParam List<Integer> idContacts){
+        serviceGroupeContact.addContact(idGroup, idContacts);
     }
 
     @DeleteMapping("/removeContact")

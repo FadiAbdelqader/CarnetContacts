@@ -1,12 +1,13 @@
 package com.example.projetFsr.service;
 
-import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
+import com.example.projetFsr.model.GroupDTO;
 import com.example.projetFsr.repository.ContactGroupRepository;
 import com.example.projetFsr.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 @Service("groupeContact")
 public class ServiceGroupeContact {
@@ -14,10 +15,10 @@ public class ServiceGroupeContact {
     ContactGroupRepository contactGroupRepository;
     @Autowired
     private ContactRepository contactRepository;
-    public boolean createGroupeContact(ContactGroup cg) {
-        return contactGroupRepository.createGroup(cg);
+    public long createGroupe(GroupDTO group) {
+        return contactGroupRepository.createGroup(group);
     }
-    public Set<ContactGroup> getGroups() {
+    public List<GroupDTO> getAllGroups() {
         return contactGroupRepository.getAllGroups();
     }
 
@@ -30,8 +31,8 @@ public class ServiceGroupeContact {
         return contactGroupRepository.getGroupByGroupName(contactGroup);
     }
 
-    public ContactGroup getGroupById(ContactGroup cg){
-        return contactGroupRepository.getGroupById((int) cg.getIdGroup());
+    public List<GroupDTO> getGroupById(long idGroup){
+        return contactGroupRepository.getGroupById(idGroup);
     }
 
     public boolean deleteGroupByName(ContactGroup cg){
@@ -42,9 +43,12 @@ public class ServiceGroupeContact {
         contactGroupRepository.modifyGroup(cg, newName);
     }
 
-    public void addContact(Integer contactGroupID, Integer contactID){
-        contactGroupRepository.addContact(contactGroupID,contactID);
+    public void addContact(Integer contactGroupID, List<Integer> contactIDs){
+        for(Integer contactID : contactIDs){
+            contactGroupRepository.addContact(contactGroupID, contactID);
+        }
     }
+
 
     public void removeContact(Integer contactGroupID, Integer contactID){
         contactGroupRepository.removeContact(contactGroupID,contactID);

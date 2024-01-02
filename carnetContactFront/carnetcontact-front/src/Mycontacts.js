@@ -160,6 +160,7 @@ function ContactWindow({ selectedContactId }) {
 }
 
 function UpdateContactWindow({ contactInfo }) {
+    const navigate = useNavigate();
     // Décomposition de contactInfo pour faciliter l'accès aux champs
     const { firstName, lastName, email, number, street, city, zip, country, phoneKind, phoneNumber } = contactInfo;
 
@@ -201,6 +202,7 @@ function UpdateContactWindow({ contactInfo }) {
 
     async function handleSubmitContact(event) {
         event.preventDefault();
+
         const userData = {
             ...state,
             idContact: contactInfo.idContact
@@ -222,6 +224,7 @@ function UpdateContactWindow({ contactInfo }) {
         } catch (error) {
             console.error("Error in updating contact:", error.message);
         }
+        navigate('/myContact')
     }
 
     return (
