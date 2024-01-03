@@ -22,8 +22,8 @@ public class ServiceGroupeContact {
         return contactGroupRepository.getAllGroups();
     }
 
-    public void deleteGroupById(ContactGroup cg){
-        contactGroupRepository.deleteGroupById(cg);
+    public boolean deleteGroupById(long idGroup){
+       return contactGroupRepository.deleteGroupById(idGroup);
     }
 
 
@@ -39,8 +39,8 @@ public class ServiceGroupeContact {
         return contactGroupRepository.deleteGroupByName(cg);
     }
 
-    public void modifyGroup(ContactGroup cg, String newName){
-        contactGroupRepository.modifyGroup(cg, newName);
+    public void modifyGroup(ContactGroup contactGroup){
+        contactGroupRepository.modifyGroup(contactGroup);
     }
 
     public void addContact(Integer contactGroupID, List<Integer> contactIDs){

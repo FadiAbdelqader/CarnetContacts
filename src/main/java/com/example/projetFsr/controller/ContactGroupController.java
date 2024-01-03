@@ -37,28 +37,14 @@ public class ContactGroupController {
         return serviceGroupeContact.getGroupByName(contactGroup);
     }
 
-    @DeleteMapping(value = "/deletegroupbyid")
-    public String deleteGroupByName(@RequestBody ContactGroup contactGroup){
-        serviceGroupeContact.deleteGroupById(contactGroup);
-        return "Groupe " + contactGroup.getIdGroup() + " deleted.";
+    @RequestMapping(method = RequestMethod.PUT,value = "/deletegroupbyid")
+    public boolean deleteGroupByName(@RequestParam long idGroup){
+        return serviceGroupeContact.deleteGroupById(idGroup);
     }
 
-    @PatchMapping(value = "/modifygroup")
-    public String modifyGroup(@RequestBody GroupModificationDTO groupModificationDTO){
-        ContactGroup cg = groupModificationDTO.getCg();
-        String newName = groupModificationDTO.getNewName();
-        serviceGroupeContact.modifyGroup(cg, newName);
-        return "Groupe " + cg.getGroupName() + " has been renamed : " + newName;
-
-        /*
-                {
-            "cg": {
-                "idGroup": 2,
-                "groupName": "MIAGE"
-            },
-            "newName": "MIAGENEW"
-        }
-         */
+    @RequestMapping(method = RequestMethod.PUT,value = "/updategroup")
+    public void modifyGroup(@RequestBody ContactGroup contactGroup){
+        serviceGroupeContact.modifyGroup(contactGroup);
     }
 
     @PostMapping("/addContact")

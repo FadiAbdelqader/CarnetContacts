@@ -147,80 +147,35 @@ function CreateContactForm() {
     }
 
     return (
-        <>
-            <div className="container">
-                <h1 className="text-center my-4">Add a contact to your contact book</h1>
-                <form onSubmit={handleSubmitNumberPhone}>
-                    <div className="row">
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="number">Number</label>
-                            <input type="text" className="form-control" id="number" name="number" value={state.number}
-                                   placeholder="Enter number" onChange={handleChangeStreetNumber} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="street">Street</label>
-                            <input type="text" className="form-control" id="street" name="street" value={state.street}
-                                   placeholder="Enter street" onChange={handleChangeStreet} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="city">City</label>
-                            <input type="text" className="form-control" id="city" name="city" value={state.city}
-                                   placeholder="Enter city" onChange={handleChangeCity} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="zip">ZIP Code</label>
-                            <input type="text" className="form-control" id="zip" name="zip" value={state.zip}
-                                   placeholder="Enter ZIP code" onChange={handleChangeZip} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="country">Country</label>
-                            <input type="text" className="form-control" id="country" name="country"
-                                   value={state.country} placeholder="Enter country" onChange={handleChangeCountry}
-                                   style={inputStyle}/>
-                        </div>
-                    </div>
+        <div className="container py-5">
+            <h2 className="text-center mb-4">Add a New Contact</h2>
+            <form onSubmit={handleSubmitNumberPhone} className="row g-3">
+                <InputField id="firstName" label="First Name" value={state.firstName} onChange={handleChangeFirstName} />
+                <InputField id="lastName" label="Last Name" value={state.lastName} onChange={handleChangeLastName} />
+                <InputField id="email" label="E-mail" value={state.email} onChange={handleChangeEmail} />
+                <InputField id="number" label="Number" value={state.number} onChange={handleChangeStreetNumber} />
+                <InputField id="street" label="Street" value={state.street} onChange={handleChangeStreet} />
+                <InputField id="city" label="City" value={state.city} onChange={handleChangeCity} />
+                <InputField id="zip" label="ZIP Code" value={state.zip} onChange={handleChangeZip} />
+                <InputField id="country" label="Country" value={state.country} onChange={handleChangeCountry} />
+                <InputField id="phoneKind" label="Phone Kind" value={state.phoneKind} onChange={handleChangePhoneKind} />
+                <InputField id="phoneNumber" label="Phone Number" value={state.phoneNumber} onChange={handleChangePhoneNumber} />
 
-                    <div className="row">
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="firstName">firstName</label>
-                            <input type="text" className="form-control" id="firstName" name="firstName"
-                                   value={state.firstName} placeholder="Enter your firstname"
-                                   onChange={handleChangeFirstName} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="lastName">lastname</label>
-                            <input type="text" className="form-control" id="lastName" name="lastName"
-                                   value={state.lastName} placeholder="Enter your lastname"
-                                   onChange={handleChangeLastName} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="email">E-mail</label>
-                            <input type="text" className="form-control" id="email" name="email" value={state.email}
-                                   placeholder="Enter your E-mail" onChange={handleChangeEmail} style={inputStyle}/>
-                        </div>
-                    </div>
+                <div className="col-12 text-center">
+                    <button type="submit" className="btn btn-primary btn-lg">Submit</button>
+                </div>
+            </form>
+        </div>
+    );
+}
 
-                    <div className="row">
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="phoneKind">phone Kind</label>
-                            <input type="text" className="form-control" id="phoneKind" name="phoneKind"
-                                   value={state.phoneKind} placeholder="Enter the phone kind"
-                                   onChange={handleChangePhoneKind} style={inputStyle}/>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="phoneNumber">phone Number</label>
-                            <input type="text" className="form-control" id="phoneNumber" name="phoneNumber"
-                                   value={state.phoneNumber} placeholder="Enter the phoneNumber"
-                                   onChange={handleChangePhoneNumber} style={inputStyle}/>
-                        </div>
-                    </div>
-
-                    <div className="text-center">
-                        <button type="submit" className="btn btn-primary btn-lg mt-2">Add Contact</button>
-                    </div>
-                </form>
-            </div>
-        </>
+function InputField({ id, label, value, onChange }) {
+    return (
+        <div className="col-md-6">
+            <label htmlFor={id} className="form-label">{label}</label>
+            <input type="text" className="form-control" id={id} name={id} value={value}
+                   placeholder={`Enter ${label.toLowerCase()}`} onChange={onChange} />
+        </div>
     );
 }
 

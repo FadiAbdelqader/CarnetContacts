@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
+
 export default function MyContacts() {
     const [selectedContactId, setSelectedContactId] = useState(null);
     const [contactToUpdate, setContactToUpdate] = useState(null);
 
     return (
         <>
-            <HomePage/>
-            <ContactsSummary onContactSelect={setSelectedContactId} onUpdateContactSelect={setContactToUpdate}/>
+            <HomePage />
+            <ContactsSummary onContactSelect={setSelectedContactId} onUpdateContactSelect={setContactToUpdate} />
             <ContactWindow selectedContactId={selectedContactId} />
             {contactToUpdate && <UpdateContactWindow contactInfo={contactToUpdate} />}
         </>
@@ -23,9 +24,9 @@ export function HomePage() {
     }
 
     return (
-        <>
+        <div className="m-3">
             <button className="btn btn-primary" onClick={handleClickButton}>Home</button>
-        </>
+        </div>
     );
 }
 
@@ -81,8 +82,9 @@ function ContactsSummary({ onContactSelect, onUpdateContactSelect }) {
 
     return (
         <div className="container mt-4">
-            <table className="table table-bordered">
-                <thead>
+            <h2 className="mb-3">Your Contacts</h2>
+            <table className="table table-hover">
+                <thead className="table-dark">
                 <tr>
                     <th>Contacts</th>
                     <th>Actions</th>
@@ -95,7 +97,7 @@ function ContactsSummary({ onContactSelect, onUpdateContactSelect }) {
                             {contact.firstName} {contact.lastName}
                         </td>
                         <td>
-                            <button className="btn btn-danger" onClick={() => deleteContacts(contact.idContact)}>
+                            <button className="btn btn-danger me-2" onClick={() => deleteContacts(contact.idContact)}>
                                 Delete
                             </button>
                             <button className="btn btn-primary" onClick={() => onUpdateContactSelect(contact)}>
@@ -145,8 +147,9 @@ function ContactWindow({ selectedContactId }) {
     }
 
     return (
-        <div className="card">
+        <div className="card mx-3 my-4">
             <div className="card-body">
+                <h5 className="card-title">Contact Details</h5>
                 <h5 className="card-title">Contact Details : </h5>
                 <p className="card-text"><strong>First Name:</strong> {contactInfo.firstName}</p>
                 <p className="card-text"><strong>Last Name:</strong> {contactInfo.lastName}</p>
@@ -224,61 +227,41 @@ function UpdateContactWindow({ contactInfo }) {
         } catch (error) {
             console.error("Error in updating contact:", error.message);
         }
-        navigate('/myContact')
     }
 
     return (
-        <div className="card">
+        <div className="card mx-3 my-4">
             <div className="card-body">
-                <h5 className="card-title">Update {state.firstName} {state.lastName} :</h5>
-                <form onSubmit={handleSubmitContact}>
-                    <div>
-                        <strong>First Name:</strong>
-                        <input type="text" name="firstName" value={state.firstName} onChange={handleChange} />
+                <h5 className="card-title">Update Contact</h5>
+                <form onSubmit={handleSubmitContact} className="row g-3">
+                    {createInputField("firstName", "First Name", state.firstName, handleChange)}
+                    {createInputField("lastName", "Last Name", state.lastName, handleChange)}
+                    {createInputField("email", "Email", state.email, handleChange)}
+                    {createInputField("number", "Number", state.number, handleChange)}
+                    {createInputField("street", "Street", state.street, handleChange)}
+                    {createInputField("city", "City", state.city, handleChange)}
+                    {createInputField("zip", "ZIP", state.zip, handleChange)}
+                    {createInputField("country", "Country", state.country, handleChange)}
+                    {createInputField("phoneKind", "Phone Kind", state.phoneKind, handleChange)}
+                    {createInputField("phoneNumber", "Phone Number", state.phoneNumber, handleChange)}
+                    <div className="col-12">
+                        <button type="submit" className="btn btn-success">Save Changes</button>
                     </div>
-                    <div>
-                        <strong>Last Name:</strong>
-                        <input type="text" name="lastName" value={state.lastName} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>Email:</strong>
-                        <input type="text" name="email" value={state.email} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>Number:</strong>
-                        <input type="text" name="number" value={state.number} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>Street:</strong>
-                        <input type="text" name="street" value={state.street} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>City:</strong>
-                        <input type="text" name="city" value={state.city} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>ZIP:</strong>
-                        <input type="text" name="zip" value={state.zip} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>Country:</strong>
-                        <input type="text" name="country" value={state.country} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>Phone Kind:</strong>
-                        <input type="text" name="phoneKind" value={state.phoneKind} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <strong>Phone Number:</strong>
-                        <input type="text" name="phoneNumber" value={state.phoneNumber} onChange={handleChange} />
-                    </div>
-                    <button type="submit">Save</button>
                 </form>
             </div>
         </div>
     );
 }
 
+function createInputField(id, label, value, onChange) {
+    return (
+        <div className="col-md-6">
+            <label htmlFor={id} className="form-label">{label}</label>
+            <input type="text" className="form-control" id={id} name={id} value={value}
+                   onChange={onChange} />
+        </div>
+    );
+}
 
 
 
