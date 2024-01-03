@@ -17,7 +17,7 @@ public class AddressController {
     ServiceAddress serviceAddress;
 
     @PostMapping("/createaddress")
-    public Boolean createAddress(@RequestBody Address address) {
+    public Integer createAddress(@RequestBody Address address) {
         return serviceAddress.createAddress(address);
     }
 

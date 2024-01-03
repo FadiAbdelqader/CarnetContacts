@@ -16,7 +16,7 @@ public class AddressRepository {
 
     @Autowired
     Address address;
-    public Boolean createAddress(Address address) {
+    public Integer createAddress(Address address) {
         boolean success = false;
         try {
             EntityManager em = JpaUtil.getEmf().createEntityManager();
@@ -24,12 +24,16 @@ public class AddressRepository {
             tx.begin();
             em.persist(address);
             tx.commit();
-            em.close();
             success = true;
+            System.out.println(success);
+            em.close();
+            return address.getIdAddress();
+
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return success;
+
     }
 
     public Address getAddressByID(Integer idAddress){

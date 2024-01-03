@@ -17,11 +17,15 @@ public class ContactDTO {
     private String zip;
     @NotNull
     private String country;
+    @NotNull
+    private String phoneKind;
+    @NotNull
+    private String phoneNumber;
 
     public ContactDTO() {
     }
 
-    public ContactDTO(Integer idContact, String firstName, String lastName, String email, Integer number, String street, String city, String zip, String country) {
+    public ContactDTO(Integer idContact, String firstName, String lastName, String email, Integer number, String street, String city, String zip, String country, String phoneKind, String phoneNumber) {
         this.idContact = idContact;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +35,8 @@ public class ContactDTO {
         this.city = city;
         this.zip = zip;
         this.country = country;
+        this.phoneKind = phoneKind;
+        this.phoneNumber = phoneNumber;
     }
 
     public Integer getIdContact() {
@@ -106,10 +112,27 @@ public class ContactDTO {
         this.country = country;
     }
 
+    public String getPhoneKind() {
+        return phoneKind;
+    }
+
+    public void setPhoneKind(String phoneKind) {
+        this.phoneKind = phoneKind;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "ContactDTO{" +
-                "firstName='" + firstName + '\'' +
+                "idContact=" + idContact +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", number=" + number +
@@ -117,6 +140,8 @@ public class ContactDTO {
                 ", city='" + city + '\'' +
                 ", zip='" + zip + '\'' +
                 ", country='" + country + '\'' +
+                ", phoneKind='" + phoneKind + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }

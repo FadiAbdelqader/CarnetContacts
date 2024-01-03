@@ -28,10 +28,14 @@ function Connection() {
   }
 
   const handleSubmit = (event) => {
-    if (username===password) {
-      navigate('/homepage')
+    event.preventDefault();
+    if (username !== password) {
+      setErrorMessage("Username or password is incorrect");
+    } else {
+      // Supposons que l'authentification est réussie
+      context.setUser(username);
+      navigate('/homepage');
     }
-    context.setUser(username);
   }
 
   return (
@@ -45,6 +49,11 @@ function Connection() {
               <h5 className="card-header text-center">Connection</h5>
               <div className="card-body">
                 <form onSubmit={handleSubmit}>
+                  {errorMessage && (
+                      <div className="alert alert-danger" role="alert">
+                        {errorMessage}
+                      </div>
+                  )}
                   <div className="form-group">
                     <label>Username</label>
                     <input type="text" className="form-control" id="username" aria-describedby="usernameHelp" placeholder={username} onChange={handleChangeUsername}/>

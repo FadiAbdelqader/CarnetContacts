@@ -12,8 +12,6 @@ public class ContactGroup {
     private long idGroup;
     private String groupName;
 
-
-
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="cg")
     private Set <Contact> contacts=new HashSet<Contact>();
 

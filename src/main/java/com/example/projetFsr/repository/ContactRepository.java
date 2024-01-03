@@ -21,7 +21,7 @@ public class ContactRepository {
     @Autowired
     Contact contact;
 
-    public boolean addContact(Contact contact) {
+    public Integer addContact(Contact contact) {
         boolean success = false;
         try (EntityManager em = JpaUtil.getEmf().createEntityManager()) {
             EntityTransaction tx = em.getTransaction();
@@ -40,6 +40,7 @@ public class ContactRepository {
 
             // Persistez le contact
             em.persist(contact);
+
             //em.persist(cg);
             tx.commit();
             em.close();
@@ -47,16 +48,34 @@ public class ContactRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return success;
+        return contact.getIdContact();
     }
+    public List<ContactDTO> getAllContact() {
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        try {
+            String jpql =
+                    "SELECT new com.example.projetFsr.model.ContactDTO(c.idContact, c.firstName, c.lastName, c.email, a.number, a.street, a.city, a.zip, a.country, pn.phoneKind, pn.phoneNumber) " +
+                            "FROM Contact c " +
+                            "LEFT JOIN c.address a " +
+                            "LEFT JOIN c.phones pn "+
+                            "ORDER BY c.firstName ASC";;
 
+            TypedQuery<ContactDTO> query = em.createQuery(jpql, ContactDTO.class);
+
+
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
     public List<ContactDTO> getContactInfo(Integer idContact) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         try {
-            String jpql = "SELECT new com.example.projetFsr.model.ContactDTO(c.idContact, c.firstName, c.lastName, c.email, a.number, a.street, a.city, a.zip, a.country) " +
+            String jpql =
+                    "SELECT new com.example.projetFsr.model.ContactDTO(c.idContact, c.firstName, c.lastName, c.email, a.number, a.street, a.city, a.zip, a.country, pn.phoneKind, pn.phoneNumber) " +
                     "FROM Contact c " +
                     "LEFT JOIN c.address a " +
+                    "LEFT JOIN c.phones pn " +
                     "WHERE c.idContact = :idContact";
 
             TypedQuery<ContactDTO> query = em.createQuery(jpql, ContactDTO.class);
@@ -68,6 +87,7 @@ public class ContactRepository {
         }
     }
 
+
     public void deleteContact(Integer idContact) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -75,7 +95,7 @@ public class ContactRepository {
             tx.begin();
 
             // Récupérer l'idAdresse associé au contact
-            Query getAddressIdQuery = em.createQuery("SELECT a.idAddresse FROM Address a WHERE a.contact.idContact = :idContact", Integer.class);
+            Query getAddressIdQuery = em.createQuery("SELECT a.idAddress FROM Address a WHERE a.contact.idContact = :idContact", Integer.class);
             getAddressIdQuery.setParameter("idContact", idContact);
             Integer idAdresse = (Integer) getAddressIdQuery.getSingleResult();
             System.out.println("idAdresse :"+idAdresse);
@@ -91,7 +111,7 @@ public class ContactRepository {
 
             // Suppression de l'adresse associée en utilisant l'idAdresse récupéré
             if (idAdresse != null) {
-                Query deleteAddress = em.createQuery("DELETE FROM Address a WHERE a.idAddresse = :idAdresse");
+                Query deleteAddress = em.createQuery("DELETE FROM Address a WHERE a.idAddress = :idAdresse");
                 deleteAddress.setParameter("idAdresse", idAdresse);
                 deleteAddress.executeUpdate();
             }
@@ -152,6 +172,49 @@ public class ContactRepository {
         } finally {
             em.close();
             return ctc;
+        }
+    }
+
+
+    public void updateAContact(ContactDTO contactDTO) {
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            // Mise à jour du contact
+            Query queryContact = em.createQuery("UPDATE Contact c SET c.firstName = :firstName, c.lastName = :lastName, c.email = :email WHERE c.idContact = :idContact");
+            queryContact.setParameter("firstName", contactDTO.getFirstName());
+            queryContact.setParameter("lastName", contactDTO.getLastName());
+            queryContact.setParameter("email", contactDTO.getEmail());
+            queryContact.setParameter("idContact", contactDTO.getIdContact());
+            queryContact.executeUpdate();
+
+            // Mise à jour de l'adresse
+            Query queryAddress = em.createQuery("UPDATE Address a SET a.number = :number, a.street = :street, a.city = :city, a.zip = :zip, a.country = :country WHERE a.contact.idContact = :idContact");
+            queryAddress.setParameter("number", contactDTO.getNumber());
+            queryAddress.setParameter("street", contactDTO.getStreet());
+            queryAddress.setParameter("city", contactDTO.getCity());
+            queryAddress.setParameter("zip", contactDTO.getZip());
+            queryAddress.setParameter("country", contactDTO.getCountry());
+            queryAddress.setParameter("idContact", contactDTO.getIdContact());
+            queryAddress.executeUpdate();
+
+            // Mise à jour du numéro de téléphone
+            Query queryPhone = em.createQuery("UPDATE PhoneNumber p SET p.phoneKind = :phoneKind, p.phoneNumber = :phoneNumber WHERE p.contact.idContact = :idContact");
+            queryPhone.setParameter("phoneKind", contactDTO.getPhoneKind());
+            queryPhone.setParameter("phoneNumber", contactDTO.getPhoneNumber());
+            queryPhone.setParameter("idContact", contactDTO.getIdContact());
+            queryPhone.executeUpdate();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
         }
     }
 }
