@@ -1,6 +1,8 @@
 package com.example.projetFsr.service;
 
+import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
+import com.example.projetFsr.model.ContactGroupDTO;
 import com.example.projetFsr.model.GroupDTO;
 import com.example.projetFsr.repository.ContactGroupRepository;
 import com.example.projetFsr.repository.ContactRepository;
@@ -49,6 +51,9 @@ public class ServiceGroupeContact {
         }
     }
 
+    public List<ContactGroupDTO> getContactsByGroupId(long groupId){
+        return contactGroupRepository.getContactsByGroupId(groupId);
+    }
 
     public void removeContact(Integer contactGroupID, Integer contactID){
         contactGroupRepository.removeContact(contactGroupID,contactID);

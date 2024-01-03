@@ -9,6 +9,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -173,6 +174,28 @@ public class ContactGroupRepository{
             em.close();
         }
     }
+
+    public List<ContactGroupDTO> getContactsByGroupId(long groupId) {
+        EntityManager em = JpaUtil.getEmf().createEntityManager();
+        try {
+            // JPQL query to fetch contacts of a specific group
+            String jpql = "SELECT new com.example.projetFsr.model.ContactGroupDTO(cg.idGroup, c.idContact, c.firstName, c.lastName, cg.groupName) " +
+                    "FROM ContactGroup cg " +
+                    "JOIN cg.contacts c " +
+                    "WHERE cg.idGroup = :groupId";
+            TypedQuery<ContactGroupDTO> query = em.createQuery(jpql, ContactGroupDTO.class);
+            query.setParameter("groupId", groupId);
+            return query.getResultList();
+        } catch (Exception e) {
+            // Consider using a logging framework here
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            em.close();
+        }
+    }
+
+
 
     public void removeContact(Integer contactGroupID, Integer contactID){
         ContactGroup contactGroup = null;

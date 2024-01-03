@@ -1,6 +1,8 @@
 package com.example.projetFsr.controller;
 
+import com.example.projetFsr.model.Contact;
 import com.example.projetFsr.model.ContactGroup;
+import com.example.projetFsr.model.ContactGroupDTO;
 import com.example.projetFsr.model.GroupDTO;
 import com.example.projetFsr.repository.GroupModificationDTO;
 import com.example.projetFsr.service.ServiceGroupeContact;
@@ -51,6 +53,11 @@ public class ContactGroupController {
     public void addContacts(@RequestParam Integer idGroup, @RequestParam List<Integer> idContacts){
         serviceGroupeContact.addContact(idGroup, idContacts);
     }
+    @GetMapping("/getContactsByGroupId")
+    public List<ContactGroupDTO> getContactsByGroupId(@RequestParam long groupId){
+        return serviceGroupeContact.getContactsByGroupId(groupId);
+    }
+
 
     @DeleteMapping("/removeContact")
     public void removeContact(@RequestParam Integer idGroup, @RequestParam Integer idContact){
