@@ -1,20 +1,23 @@
-import React, { useContext } from "react";
-import { AuthContext } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import React, {useContext} from "react";
+import {AuthContext} from "./AuthContext";
+import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported
 
 export default function Home() {
     return (
-        <div className="container mt-5">
-            <Navbar />
-            <Hello />
-            <div className="row mt-4 g-3">
-                <MyContacts />
-                <AddContacts />
-                <MyGroups />
-                <AddGroup />
+        <>
+            <LogOut/>
+            <div className="container mt-5">
+                <Navbar/>
+                <Hello/>
+                <div className="row mt-4 g-3">
+                    <MyContacts/>
+                    <AddContacts/>
+                    <MyGroups/>
+                    <AddGroup/>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -29,7 +32,7 @@ function Navbar() {
 }
 
 function Hello() {
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
     return (
         <div className="alert alert-primary mt-4" role="alert">
             <h4 className="alert-heading">Welcome, {user}!</h4>
@@ -38,11 +41,27 @@ function Hello() {
     )
 }
 
+export function LogOut() {
+    const navigate = useNavigate();
+
+    function HandlclickButton() {
+        navigate('/')
+    }
+
+    return (
+        <div className="col-md-6 col-lg-3">
+            <button className="btn btn-danger w-5" onClick={HandlclickButton}>Log out</button>
+        </div>
+    )
+}
+
 function MyContacts() {
     const navigate = useNavigate();
+
     function HandlclickButton() {
         navigate('/myContact')
     }
+
     return (
         <div className="col-md-6 col-lg-3">
             <button className="btn btn-outline-primary w-100" onClick={HandlclickButton}>My Contacts</button>
@@ -52,9 +71,11 @@ function MyContacts() {
 
 function AddContacts() {
     const navigate = useNavigate();
+
     function HandlclickButton() {
         navigate('/createcontact')
     }
+
     return (
         <div className="col-md-6 col-lg-3">
             <button className="btn btn-outline-secondary w-100" onClick={HandlclickButton}>Add Contacts</button>
@@ -63,18 +84,26 @@ function AddContacts() {
 }
 
 function MyGroups() {
+    const navigate = useNavigate();
+
+    function HandlclickButton() {
+        navigate('/myGroups')
+    }
+
     return (
         <div className="col-md-6 col-lg-3">
-            <button className="btn btn-outline-success w-100">My Groups</button>
+            <button className="btn btn-outline-success w-100" onClick={HandlclickButton}>My Groups</button>
         </div>
     )
 }
 
 function AddGroup() {
     const navigate = useNavigate();
+
     function HandlclickButton() {
         navigate('/createGroup')
     }
+
     return (
         <div className="col-md-6 col-lg-3">
             <button className="btn btn-outline-info w-100" onClick={HandlclickButton}>Create Group</button>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-
+import {LogOut} from "./Homepage";
 
 export default function MyContacts() {
     const [selectedContactId, setSelectedContactId] = useState(null);
@@ -8,10 +8,17 @@ export default function MyContacts() {
 
     return (
         <>
-            <HomePage />
-            <ContactsSummary onContactSelect={setSelectedContactId} onUpdateContactSelect={setContactToUpdate} />
-            <ContactWindow selectedContactId={selectedContactId} />
-            {contactToUpdate && <UpdateContactWindow contactInfo={contactToUpdate} />}
+            <div className="d-flex justify-content-start">
+                <div className="me-2">
+                    <HomePage/>
+                </div>
+                <div>
+                    <LogOut/>
+                </div>
+            </div>
+            <ContactsSummary onContactSelect={setSelectedContactId} onUpdateContactSelect={setContactToUpdate}/>
+            <ContactWindow selectedContactId={selectedContactId}/>
+            {contactToUpdate && <UpdateContactWindow contactInfo={contactToUpdate}/>}
         </>
     );
 }
@@ -30,7 +37,7 @@ export function HomePage() {
     );
 }
 
-function ContactsSummary({ onContactSelect, onUpdateContactSelect }) {
+function ContactsSummary({onContactSelect, onUpdateContactSelect}) {
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
@@ -112,7 +119,7 @@ function ContactsSummary({ onContactSelect, onUpdateContactSelect }) {
     );
 }
 
-function ContactWindow({ selectedContactId }) {
+function ContactWindow({selectedContactId}) {
     const [contactInfo, setContactInfo] = useState(null);
 
     useEffect(() => {
@@ -149,12 +156,13 @@ function ContactWindow({ selectedContactId }) {
     return (
         <div className="card mx-3 my-4">
             <div className="card-body">
-                <h5 className="card-title">Contact Details</h5>
-                <h5 className="card-title">Contact Details : </h5>
+                <h5 className="card-title">Contact details : </h5>
                 <p className="card-text"><strong>First Name:</strong> {contactInfo.firstName}</p>
                 <p className="card-text"><strong>Last Name:</strong> {contactInfo.lastName}</p>
                 <p className="card-text"><strong>Email:</strong> {contactInfo.email}</p>
-                <p className="card-text"><strong>Address:</strong> {contactInfo.number}, {contactInfo.street} in {contactInfo.city} {contactInfo.zip} {contactInfo.country}</p>
+                <p className="card-text">
+                    <strong>Address:</strong> {contactInfo.number}, {contactInfo.street} in {contactInfo.city} {contactInfo.zip} {contactInfo.country}
+                </p>
                 <p className="card-text"><strong>Phone Kind:</strong> {contactInfo.phoneKind}</p>
                 <p className="card-text"><strong>Phone Number:</strong> {contactInfo.phoneNumber}</p>
             </div>
@@ -162,10 +170,10 @@ function ContactWindow({ selectedContactId }) {
     );
 }
 
-function UpdateContactWindow({ contactInfo }) {
+function UpdateContactWindow({contactInfo}) {
     const navigate = useNavigate();
     // Décomposition de contactInfo pour faciliter l'accès aux champs
-    const { firstName, lastName, email, number, street, city, zip, country, phoneKind, phoneNumber } = contactInfo;
+    const {firstName, lastName, email, number, street, city, zip, country, phoneKind, phoneNumber} = contactInfo;
 
     const [state, setState] = useState({
         firstName: '',
@@ -199,8 +207,8 @@ function UpdateContactWindow({ contactInfo }) {
     }, [contactInfo]);
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setState({ ...state, [name]: value });
+        const {name, value} = event.target;
+        setState({...state, [name]: value});
     };
 
     async function handleSubmitContact(event) {
@@ -213,7 +221,7 @@ function UpdateContactWindow({ contactInfo }) {
 
         const requestOptions = {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userData)
         };
 
@@ -222,8 +230,12 @@ function UpdateContactWindow({ contactInfo }) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+
             const idContact = await response.json();
             console.log("Contact updated with ID:", idContact);
+
+            // Recharge la page après la mise à jour réussie
+            window.location.reload();
         } catch (error) {
             console.error("Error in updating contact:", error.message);
         }
@@ -258,7 +270,7 @@ function createInputField(id, label, value, onChange) {
         <div className="col-md-6">
             <label htmlFor={id} className="form-label">{label}</label>
             <input type="text" className="form-control" id={id} name={id} value={value}
-                   onChange={onChange} />
+                   onChange={onChange}/>
         </div>
     );
 }

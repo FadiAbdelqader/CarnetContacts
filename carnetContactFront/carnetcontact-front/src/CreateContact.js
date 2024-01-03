@@ -1,10 +1,19 @@
 import React, {useState} from "react";
 import {HomePage} from "./Mycontacts";
+import {LogOut} from "./Homepage";
+import {useNavigate} from "react-router-dom";
 
 export default function Home() {
     return (
         <>
-            <HomePage/>
+            <div className="d-flex justify-content-start">
+                <div className="me-2">
+                    <HomePage/>
+                </div>
+                <div>
+                    <LogOut/>
+                </div>
+            </div>
             <CreateContactForm/>
         </>
     );
@@ -12,7 +21,7 @@ export default function Home() {
 
 function CreateContactForm() {
     const inputStyle = {border: '3px solid', padding: '0.375rem 0.75rem'};
-
+    const navigate = useNavigate();
     const [state, setState] = useState({});
 
     const handleChangeStreetNumber = (event) => {
@@ -88,6 +97,7 @@ function CreateContactForm() {
     }
 
     async function handleSubmitContact(event) {
+
         event.preventDefault();
 
         const idAddress = await handleSubmitAddress(event);
@@ -142,7 +152,7 @@ function CreateContactForm() {
             body: JSON.stringify(phoneData)
         };
         fetch('http://localhost:8080/createphone', requestOptions)
-            .then(response => console.log("ok"))
+            .then(response => navigate("/myContact"))
             .catch(error => console.log(error.message))
     }
 

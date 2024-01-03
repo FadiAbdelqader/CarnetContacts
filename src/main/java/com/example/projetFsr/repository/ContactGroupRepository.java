@@ -179,15 +179,16 @@ public class ContactGroupRepository{
         EntityManager em = JpaUtil.getEmf().createEntityManager();
         try {
             // JPQL query to fetch contacts of a specific group
-            String jpql = "SELECT new com.example.projetFsr.model.ContactGroupDTO(cg.idGroup, c.idContact, c.firstName, c.lastName, cg.groupName) " +
+            String jpql = "SELECT new com.example.projetFsr.model.ContactGroupDTO(cg.idGroup, c.idContact, c.firstName, c.lastName, c.email, addr.number, addr.street, addr.city, addr.zip, addr.country, phone.phoneKind, phone.phoneNumber, cg.groupName) " +
                     "FROM ContactGroup cg " +
                     "JOIN cg.contacts c " +
+                    "LEFT JOIN c.address addr " +
+                    "LEFT JOIN c.phones phone " +
                     "WHERE cg.idGroup = :groupId";
             TypedQuery<ContactGroupDTO> query = em.createQuery(jpql, ContactGroupDTO.class);
             query.setParameter("groupId", groupId);
             return query.getResultList();
         } catch (Exception e) {
-            // Consider using a logging framework here
             e.printStackTrace();
             return Collections.emptyList();
         } finally {

@@ -1,15 +1,24 @@
 import {HomePage} from "./Mycontacts";
+import {LogOut} from "./Homepage";
 import React, {useEffect, useState} from "react";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider, useDrag, useDrop} from "react-dnd";
+import {useNavigate} from "react-router-dom";
 
 export default function CreateGroup() {
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [selectedContact, setSelectedContact] = useState([]);
     return (
         <>
+            <div className="d-flex justify-content-start">
+                <div className="me-2">
+                    <HomePage/>
+                </div>
+                <div>
+                    <LogOut/>
+                </div>
+            </div>
             <DndProvider backend={HTML5Backend}>
-                <HomePage />
                 <CreateGroupForm />
                 <div className="container-fluid mt-4">
                     <div className="row flex-nowrap">
@@ -216,7 +225,7 @@ function ContactsSummary({setSelectedContact}) {
 }
 
 function AddContactWindow({selectedGroup, selectedContact}) {
-
+    const navigate = useNavigate();
     const [{canDrop, isOver}, drop] = useDrop(() => ({
         accept: "box",
         drop: () => ({name: 'AddContactWindow'}),
@@ -241,7 +250,7 @@ function AddContactWindow({selectedGroup, selectedContact}) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             console.log("ok!!!!!");
-
+            navigate('/myGroups')
         } catch (error) {
             console.log("Error in submitting address:", error.message);
         }
