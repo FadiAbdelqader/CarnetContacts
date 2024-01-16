@@ -69,6 +69,7 @@ function GroupsSummary({onGroupSelect, onUpdateGroupSelect}) {
         }
     }
 
+
     return (
         <div className="container mt-4">
             <h2 className="mb-3">Your groups :</h2>
@@ -136,13 +137,35 @@ function GroupWindow({ selectedGroupId }) {
         return <div>Select a group to see its contacts</div>;
     }
 
+    async function DeleteContactFromAGroup(idGroup, idContact) {
+        const option = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/removeContact?idGroup=${idGroup}&idContact=${idContact}`, option);
+            if (response.ok) {
+                const updatedGroupInfo = groupInfo.filter(contact => contact.idContact !== idContact);
+                setGroupInfo(updatedGroupInfo);
+                console.log('Suppression du contact du groupe : OK!');
+            } else {
+                console.error('Suppression du contact du groupe : ERREUR!');
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     return (
         <div className="card mx-3 my-4">
             <div className="card-body">
                 <h5 className="card-title">Group {groupInfo.groupName} Details</h5>
                 {groupInfo.map((contact, index) => (
                     <div key={index}>
-                        <h6>Contact {index + 1}:</h6>
+                        <h6>Contact {index + 1}:<button className="btn btn-danger" onClick={() => DeleteContactFromAGroup(contact.idGroup, contact.idContact)}>Delete</button> </h6>
                         <p><strong>Identity :</strong> {contact.firstName} {contact.lastName} </p>
                         <p><strong>Contact :</strong> {contact.email} or on his/her {contact.phoneKind} at {contact.phoneNumber}</p>
                         <p><strong>Address :</strong> {contact.number}  {contact.street} in {contact.city}, {contact.zip} {contact.country}</p>

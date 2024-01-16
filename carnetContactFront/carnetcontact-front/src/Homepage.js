@@ -64,7 +64,7 @@ function MyContacts() {
 
     return (
         <div className="col-md-6 col-lg-3">
-            <button className="btn btn-outline-primary w-100" onClick={HandlclickButton}>My Contacts</button>
+            <button className="btn btn-outline-primary w-100" onClick={HandlclickButton}>My contacts</button>
         </div>
     )
 }
@@ -78,7 +78,7 @@ function AddContacts() {
 
     return (
         <div className="col-md-6 col-lg-3">
-            <button className="btn btn-outline-secondary w-100" onClick={HandlclickButton}>Add Contacts</button>
+            <button className="btn btn-outline-danger w-100" onClick={HandlclickButton}>Add contacts</button>
         </div>
     )
 }
@@ -92,7 +92,7 @@ function MyGroups() {
 
     return (
         <div className="col-md-6 col-lg-3">
-            <button className="btn btn-outline-success w-100" onClick={HandlclickButton}>My Groups</button>
+            <button className="btn btn-outline-success w-100" onClick={HandlclickButton}>My groups</button>
         </div>
     )
 }
@@ -106,7 +106,7 @@ function AddGroup() {
 
     return (
         <div className="col-md-6 col-lg-3">
-            <button className="btn btn-outline-info w-100" onClick={HandlclickButton}>Create Group</button>
+            <button className="btn btn-outline-info w-100" onClick={HandlclickButton}>Manage groups</button>
         </div>
     )
 }
