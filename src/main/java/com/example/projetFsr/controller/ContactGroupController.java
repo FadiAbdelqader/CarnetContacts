@@ -58,8 +58,7 @@ public class ContactGroupController {
         return serviceGroupeContact.getContactsByGroupId(groupId);
     }
 
-
-    @DeleteMapping("/removeContact")
+    @RequestMapping(method = RequestMethod.PUT, value ="/removeContact")
     public void removeContact(@RequestParam Integer idGroup, @RequestParam Integer idContact){
         serviceGroupeContact.removeContact(idGroup,idContact);
     }

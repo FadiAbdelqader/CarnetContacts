@@ -230,14 +230,12 @@ function UpdateContactWindow({contactInfo}) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
             const idContact = await response.json();
             console.log("Contact updated with ID:", idContact);
 
-            // Recharge la page après la mise à jour réussie
-            window.location.reload();
         } catch (error) {
             console.error("Error in updating contact:", error.message);
+            window.location.reload();
         }
     }
 
