@@ -27,7 +27,7 @@ public class ContactGroup {
     public void removeContact(Contact contact){
         if(this.contacts.contains(contact)) {
             this.contacts.remove(contact);
-            contact.getCg().remove(this); // Maintenant, cela affectera uniquement la relation entre ce contact et ce groupe
+            contact.getCg().remove(this);
         }
     }
 

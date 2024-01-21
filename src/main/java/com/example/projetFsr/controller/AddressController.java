@@ -25,7 +25,7 @@ public class AddressController {
     public String getAddressByID(@RequestParam Integer idAddress) {
         return serviceAddress.getAddressByID(idAddress).toString();
     }
-    @DeleteMapping("/deleteaddressbyid") //supprimer d'abord la clé externe se trouvant dans la table contact
+    @DeleteMapping("/deleteaddressbyid")
     public boolean deleteAddressByID(@RequestParam Integer idAddress) {
         return serviceAddress.deleteAddressByID(idAddress);
     }
@@ -39,6 +39,4 @@ public class AddressController {
     public void modifyPhone(@RequestBody Address address){
         serviceAddress.modifyAddress(address);
     }
-
-
 }
