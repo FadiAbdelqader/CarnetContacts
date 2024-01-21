@@ -37,11 +37,6 @@ public class ContactController {
         return serviceContact.getContactInfo(idContact);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/updateContact")
-    public void updateContact(@RequestBody Contact contact){
-        serviceContact.updateContact(contact);
-    }
-
     @RequestMapping(method = RequestMethod.PUT, value = "/updateAContact")
     public void updateAContact(@RequestBody ContactDTO contactDTO){
         serviceContact.updateAContact(contactDTO);

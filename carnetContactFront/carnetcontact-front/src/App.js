@@ -32,7 +32,6 @@ function Connection() {
     if (username !== password) {
       setErrorMessage("Username or password is incorrect");
     } else {
-      // Supposons que l'authentification est réussie
       context.setUser(username);
       navigate('/homepage');
     }
@@ -59,7 +58,7 @@ function Connection() {
                     <input type="text" className="form-control" id="username" aria-describedby="usernameHelp" placeholder={username} onChange={handleChangeUsername}/>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="password">Mot de Passe</label>
+                    <label htmlFor="password">Password</label>
                     <input type="password" className="form-control" id="password" placeholder={password} onChange={handleChangePassword}/>
                   </div>
                   <button type="submit" className="btn btn-primary btn-block">Conection</button>

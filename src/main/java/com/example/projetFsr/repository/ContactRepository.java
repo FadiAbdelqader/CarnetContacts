@@ -38,10 +38,8 @@ public class ContactRepository {
             Set<PhoneNumber> phones = contact.getPhones();
             contact.setPhones(phones);
 
-            // Persistez le contact
             em.persist(contact);
 
-            //em.persist(cg);
             tx.commit();
             em.close();
             success = true;
@@ -94,22 +92,21 @@ public class ContactRepository {
         try {
             tx.begin();
 
-            // Récupérer l'idAdresse associé au contact
+
             Query getAddressIdQuery = em.createQuery("SELECT a.idAddress FROM Address a WHERE a.contact.idContact = :idContact", Integer.class);
             getAddressIdQuery.setParameter("idContact", idContact);
             Integer idAdresse = (Integer) getAddressIdQuery.getSingleResult();
             System.out.println("idAdresse :"+idAdresse);
-            // Suppression des numéros de téléphone associés
+
             Query deletePhones = em.createQuery("DELETE FROM PhoneNumber p WHERE p.contact.idContact = :idContact");
             deletePhones.setParameter("idContact", idContact);
             deletePhones.executeUpdate();
 
-            // Suppression du contact
+
             Query deleteContact = em.createQuery("DELETE FROM Contact c WHERE c.idContact = :idContact");
             deleteContact.setParameter("idContact", idContact);
             deleteContact.executeUpdate();
 
-            // Suppression de l'adresse associée en utilisant l'idAdresse récupéré
             if (idAdresse != null) {
                 Query deleteAddress = em.createQuery("DELETE FROM Address a WHERE a.idAddress = :idAdresse");
                 deleteAddress.setParameter("idAdresse", idAdresse);
@@ -128,53 +125,6 @@ public class ContactRepository {
             em.close();
         }
     }
-
-    public void updateContact(Contact contact) {
-        EntityManager em = JpaUtil.getEmf().createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-
-            Query query = em.createQuery("UPDATE Contact c SET c.firstName = :firstName, c.lastName = :lastName, c.email = :email WHERE c.idContact = :idContact");
-            query.setParameter("firstName", contact.getFirstName());
-            query.setParameter("lastName", contact.getLastName());
-            query.setParameter("email", contact.getEmail());
-            query.setParameter("idContact", contact.getIdContact());
-
-            query.executeUpdate();
-
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
-
-    public Contact getContactByID(Integer id){
-        Contact ctc = null;
-        EntityManager em = JpaUtil.getEmf().createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-                TypedQuery<Contact> query = em.createQuery("SELECT ct FROM Contact ct WHERE ct.idContact = :id", Contact.class);
-            query.setParameter("id", id);
-            ctc = query.getSingleResult();
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            em.close();
-            return ctc;
-        }
-    }
-
 
     public void updateAContact(ContactDTO contactDTO) {
         EntityManager em = JpaUtil.getEmf().createEntityManager();

@@ -207,7 +207,7 @@ function UpdateGroupWindow({ groupInfo }) {
     return (
         <div className="card mx-3 my-4">
             <div className="card-body">
-                <h5 className="card-title">Update Contact</h5>
+                <h5 className="card-title">Update Group</h5>
                 <form onSubmit={SaveNewGroupName} className="row g-3">
                     {createInputField("groupName", "group name", groupName, handleGroupNameChange)}
                     <div className="col-12">

@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {AuthContext} from "./AuthContext";
 import {useNavigate} from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Home() {
     return (

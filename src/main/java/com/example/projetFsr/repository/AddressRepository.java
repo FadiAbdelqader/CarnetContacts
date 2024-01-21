@@ -125,6 +125,4 @@ public class AddressRepository {
             em.close();
         }
     }
-
-
 }

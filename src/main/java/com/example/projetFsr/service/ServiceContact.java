@@ -33,11 +33,6 @@ public class ServiceContact {
     }
 
 
-    public void updateContact(Contact contact) {
-        contactRepository.updateContact(contact);
-    }
-
-
     public void updateAContact(ContactDTO contactDTO) {
         contactRepository.updateAContact(contactDTO);
     }
