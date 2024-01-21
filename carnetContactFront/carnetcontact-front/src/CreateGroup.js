@@ -65,10 +65,10 @@ function CreateGroupForm() {
             const idGroup = await response.json();
             console.log("Group created with ID:", idGroup);
             window.location.reload();
-            return idGroup; // Retourne l'ID
+            return idGroup;
         } catch (error) {
             console.log("Error in submitting address:", error.message);
-            return null; // Retourne null en cas d'erreur
+            return null;
         }
     }
 
@@ -262,7 +262,7 @@ function AddContactWindow({selectedGroup, selectedContact}) {
                 <div className="card-header py-2">
                     <h5>{selectedGroup ? selectedGroup.groupName : "Select a Group"}</h5>
                 </div>
-                <div ref={drop} className="card-body text-success p-2" style={{ minHeight: '33.3rem' }}> {/* Set a minimum height */}
+                <div ref={drop} className="card-body text-success p-2" style={{ minHeight: '33.3rem' }}> {}
                     <div className="container mt-4">
                         <table className="table table-bordered">
                             <thead>
@@ -290,48 +290,3 @@ function AddContactWindow({selectedGroup, selectedContact}) {
         </>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

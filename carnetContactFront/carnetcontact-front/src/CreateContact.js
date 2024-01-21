@@ -87,12 +87,12 @@ function CreateContactForm() {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            const idAddress = await response.json(); // Supposant que la réponse est en JSON
+            const idAddress = await response.json();
             console.log("Address created with ID:", idAddress);
-            return idAddress; // Retourne l'ID
+            return idAddress;
         } catch (error) {
             console.log("Error in submitting address:", error.message);
-            return null; // Retourne null en cas d'erreur
+            return null;
         }
     }
 
@@ -128,7 +128,7 @@ function CreateContactForm() {
             return idContact;
         } catch (error) {
             console.log("Error in submitting address:", error.message);
-            return null; // Retourne null en cas d'erreur
+            return null;
         }
     }
 
@@ -188,32 +188,3 @@ function InputField({ id, label, value, onChange }) {
         </div>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

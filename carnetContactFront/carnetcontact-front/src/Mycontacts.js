@@ -77,7 +77,6 @@ function ContactsSummary({onContactSelect, onUpdateContactSelect}) {
         try {
             const response = await fetch(`http://localhost:8080/deleteContact?idContact=${idContact}`, option);
             if (response.ok) {
-                // Supprimez le contact de l'état local après la suppression réussie
                 setContacts(contacts.filter(contact => contact.idContact !== idContact));
             } else {
                 console.error('Suppression du contact : ERREUR!');
@@ -171,8 +170,6 @@ function ContactWindow({selectedContactId}) {
 }
 
 function UpdateContactWindow({contactInfo}) {
-    const navigate = useNavigate();
-    // Décomposition de contactInfo pour faciliter l'accès aux champs
     const {firstName, lastName, email, number, street, city, zip, country, phoneKind, phoneNumber} = contactInfo;
 
     const [state, setState] = useState({
@@ -188,7 +185,6 @@ function UpdateContactWindow({contactInfo}) {
         phoneNumber: ''
     });
 
-    // Mise à jour de l'état lorsque contactInfo change
     useEffect(() => {
         if (contactInfo) {
             setState({
