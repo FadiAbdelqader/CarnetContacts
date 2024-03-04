@@ -72,6 +72,34 @@ function MyContacts() {
 function AddContacts() {
     const navigate = useNavigate();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function HandlclickButton() {
         navigate('/createcontact')
     }
